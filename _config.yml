@@ -1,0 +1,40 @@
+title: Macro Claw
+description: 매크로 경제 & OpenClaw 활용 가이드
+author: thanksdany
+lang: ko
+timezone: Asia/Seoul
+
+theme: minima
+
+markdown: kramdown
+highlighter: rouge
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO 설정
+twitter:
+  username: macro_claw
+  card: summary
+
+social:
+  name: Macro Claw
+  links:
+    - https://github.com/swc7592-blip
+
+# 기본 설정
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+      permalink: /:categories/:year/:month/:day/:title/
+
+# Collections
+collections:
+  tags:
+    output: true
+    permalink: /tags/:path/
