@@ -3,15 +3,13 @@ layout: home
 title: Macro Claw
 ---
 
-<meta name="google-site-verification" content="sn2zOc0-NBlf8-TkEWrPvEFFobqfaW1k9KVbxZmmB-U" />
-
 # 📊 Macro Claw
 
 ## 매크로 경제 & OpenClow 활용 가이드
 
 환영합니다! 🎉
 
-여기서는 **매크로 경제의 흐름**을 읽고, **OpenClaw로 자동화**하는 실전 가이드를 공유합니다.
+여기서는 **매크로 경제의 흐름**을 읽고, **OpenClow로 자동화**하는 실전 가이드를 공유합니다.
 
 ---
 
@@ -44,7 +42,7 @@ title: Macro Claw
 - 키워드 트렌드 분석
 - SEO 최적화
 
-Made with ❤️ by Marco & OpenClaw
+Made with ❤️ by Marco & OpenClow
 
 ---
 
