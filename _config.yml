@@ -28,6 +28,9 @@ social:
 # 구글 애널리틱스
 google_analytics: G-6PG72MC66V
 
+# 구글 사이트 인증
+google_site_verification: sn2zOc0-NBlf8-TkEWrPvEFFobqfaW1k9KVbxZmmB-U
+
 # 기본 설정
 defaults:
   - scope:
