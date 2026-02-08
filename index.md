@@ -43,3 +43,9 @@ title: Macro Claw
 - SEO 최적화
 
 Made with ❤️ by Marco & OpenClaw
+
+---
+
+## 📊 방문자 수
+
+{% include footer-busuanzi.html %}

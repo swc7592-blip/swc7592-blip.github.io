@@ -13,6 +13,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-analytics
 
 # SEO 설정
 twitter:
@@ -23,6 +24,9 @@ social:
   name: Macro Claw
   links:
     - https://github.com/swc7592-blip
+
+# 구글 애널리틱스
+google_analytics: G-XXXXXXXXXX
 
 # 기본 설정
 defaults:
