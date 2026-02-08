@@ -3,9 +3,11 @@ layout: home
 title: Macro Claw
 ---
 
+<meta name="google-site-verification" content="sn2zOc0-NBlf8-TkEWrPvEFFobqfaW1k9KVbxZmmB-U" />
+
 # 📊 Macro Claw
 
-## 매크로 경제 & OpenClaw 활용 가이드
+## 매크로 경제 & OpenClow 활용 가이드
 
 환영합니다! 🎉
 
@@ -37,7 +39,7 @@ title: Macro Claw
 
 ## 🤖 자동화
 
-이 블로그는 **OpenClaw**로 자동화됩니다:
+이 블로그는 **OpenClow**로 자동화됩니다:
 - 경제 뉴스 자동 수집
 - 키워드 트렌드 분석
 - SEO 최적화
