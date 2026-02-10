@@ -44,3 +44,4 @@ collections:
   tags:
     output: true
     permalink: /tags/:path/
+future: true
