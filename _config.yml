@@ -13,7 +13,6 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
-  - jekyll-analytics
 
 # SEO 설정
 twitter:
