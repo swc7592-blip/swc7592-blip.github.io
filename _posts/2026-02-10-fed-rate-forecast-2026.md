@@ -123,7 +123,6 @@ description: "2026년 연준의 기준금리 전망과 투자자들이 알아야
 
 ### 다음에 볼 포스트
 
-- [2026 FOMC 일정과 한국 시간 총정리]({{ site.baseurl }}{% post_url 2026-02-17-fomc-schedule-2026 %})
 - [연준 금리와 주식 시장 관계 완전 분석]({{ site.baseurl }}{% post_url 2026-02-24-fed-stocks-correlation %})
 
 ---
