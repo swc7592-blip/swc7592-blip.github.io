@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+
+import json
+import re
+from collections import Counter
+from datetime import datetime
+
+# Read the file
+with open('data/collected_tweets_20260210_001307.json', 'r') as f:
+    content = f.read()
+
+# Extract all JSON arrays (there are multiple concatenated arrays)
+pattern = r'\[[\s\S]*?\]'
+matches = re.findall(pattern, content)
+
+all_tweets = []
+
+# Parse each array and combine tweets
+for match in matches:
+    try:
+        tweets = json.loads(match)
+        if isinstance(tweets, list):
+            all_tweets.extend(tweets)
+    except json.JSONDecodeError:
+        pass
+
+print(f"Total tweets collected: {len(all_tweets)}\n")
+
+# Remove RT duplicates (keep only the retweet info)
+unique_tweets = []
+seen_ids = set()
+for tweet in all_tweets:
+    if tweet['id'] not in seen_ids:
+        seen_ids.add(tweet['id'])
+        unique_tweets.append(tweet)
+
+print(f"Unique tweets: {len(unique_tweets)}\n")
+
+# Extract all text for keyword analysis
+all_text = []
+for tweet in unique_tweets:
+    all_text.append(tweet['text'])
+
+# Extract hashtags
+hashtags = []
+for text in all_text:
+    matches = re.findall(r'#\w+', text)
+    hashtags.extend(matches)
+
+# Extract cashtags (stock symbols)
+cashtags = []
+for text in all_text:
+    matches = re.findall(r'\$\w+', text)
+    cashtags.extend(matches)
+
+# Extract mentions
+mentions = []
+for text in all_text:
+    matches = re.findall(r'@\w+', text)
+    mentions.extend(matches)
+
+# Get word frequency (excluding common words)
+all_words = []
+for text in all_text:
+    words = re.findall(r'\b[a-zA-Z가-힣]+\b', text)
+    all_words.extend(words)
+
+# Filter out common English and Korean words
+common_words = {'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from', 'as', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'this', 'that', 'these', 'those', 'it', 'its', 'i', 'you', 'he', 'she', 'we', 'they', 'what', 'which', 'who', 'whom', 'me', 'him', 'her', 'us', 'them', 'my', 'your', 'his', 'her', 'our', 'their', 'mine', 'yours', 'hers', 'ours', 'theirs', 'im', 'RT', 'new', 'year', 'https', 't', 'co', 'going', 'dont', 'know', 'like', 'want', 'make', 'get', '시', '에서', '를', '으로', '에', '가', '은', '는', '이', '와', '은', '입니다', '입니다', '하고', '하다', '있습니다', '한다', '하는', '하는데', '그리고', '하지만', '그래서', '그러나', '하지만', '그런데', '그러니까', '그래서', '있', '없', '되', '가다', '오다', '보다', '하다', '있다', '없다', '되다', '같다', '않다', '그렇다', '아니다', '이다', '이다', '것이다', '것이다', '것이다'}
+
+filtered_words = [word.lower() for word in all_words if word.lower() not in common_words and len(word) > 2]
+
+# Sort by engagement (retweets + likes)
+sorted_by_engagement = sorted(unique_tweets, key=lambda x: (x.get('retweetCount', 0) + x.get('likeCount', 0)), reverse=True)
+
+# Generate report
+print("=" * 80)
+print("팔로워 트윗 분석 보고서")
+print("=" * 80)
+print(f"수집 시간: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+print(f"총 트윗 수: {len(unique_tweets)}")
+print()
+
+print("-" * 80)
+print("1. 전체 트윗 요약")
+print("-" * 80)
+print(f"- 주요 활동 유형: 리트윗(RT)이 {sum(1 for t in unique_tweets if t['text'].startswith('RT'))}개로 전체의 {sum(1 for t in unique_tweets if t['text'].startswith('RT'))/len(unique_tweets)*100:.1f}%를 차지")
+print(f"- 미디어 포함 트윗: {sum(1 for t in unique_tweets if 'media' in t)}개")
+print(f"- 최신 트윗: {sorted(unique_tweets, key=lambda x: x['createdAt'], reverse=True)[0]['createdAt']}")
+print(f("- 최신 트윗: {sorted(unique_tweets, key=lambda x: x['createdAt'], reverse=True)[0]['text'][:100]}...")
+print()
+
+print("-" * 80)
+print("2. TOP 5 트윗 상세 요약 (참여도 기준)")
+print("-" * 80)
+for i, tweet in enumerate(sorted_by_engagement[:5], 1):
+    print(f"\n【TOP {i}】참여도: {tweet.get('retweetCount', 0)} RT + {tweet.get('likeCount', 0)} Like = {tweet.get('retweetCount', 0) + tweet.get('likeCount', 0)}")
+    print(f"작성자: @{tweet['author']['username']} ({tweet['author']['name']})")
+    print(f"작성 시간: {tweet['createdAt']}")
+    print(f"내용: {tweet['text'][:200]}...")
+    if 'media' in tweet:
+        print(f"미디어: {len(tweet['media'])}개 ({tweet['media'][0]['type']})")
+
+print()
+print("-" * 80)
+print("3. 트렌드 키워드 분석")
+print("-" * 80)
+
+# Word frequency
+word_freq = Counter(filtered_words).most_common(20)
+print("\n【주요 단어 빈도 (TOP 20)】")
+for word, count in word_freq:
+    print(f"  {word}: {count}회")
+
+# Hashtag frequency
+if hashtags:
+    hashtag_freq = Counter(hashtags).most_common(10)
+    print("\n【해시태그 빈도 (TOP 10)】")
+    for tag, count in hashtag_freq:
+        print(f"  {tag}: {count}회")
+else:
+    print("\n【해시태그】사용된 해시태그가 없습니다.")
+
+# Cashtag frequency (stock symbols)
+if cashtags:
+    cashtag_freq = Counter(cashtags).most_common(10)
+    print("\n【주식 심볼 빈도 (TOP 10)】")
+    for tag, count in cashtag_freq:
+        print(f"  {tag}: {count}회")
+else:
+    print("\n【주식 심볼】언급된 주식 심볼이 없습니다.")
+
+# Mention frequency
+if mentions:
+    mention_freq = Counter(mentions).most_common(10)
+    print("\n【멘션 빈도 (TOP 10)】")
+    for mention, count in mention_freq:
+        print(f"  {mention}: {count}회")
+else:
+    print("\n【멘션】사용된 멘션이 없습니다.")
+
+print()
+print("-" * 80)
+print("4. 트윗 작성 시간 분석")
+print("-" * 80)
+# Parse creation times
+hours = []
+for tweet in unique_tweets:
+    try:
+        dt = datetime.strptime(tweet['createdAt'], '%a %b %d %H:%M:%S %z %Y')
+        hours.append(dt.hour)
+    except:
+        pass
+
+if hours:
+    hour_freq = Counter(hours).most_common()
+    print("\n【시간대별 트윗 빈도】")
+    for hour, count in sorted(hour_freq):
+        print(f"  {hour:02d}:00-{hour:02d}:59: {count}개")
+
+print()
+print("=" * 80)
+print("보고서 종료")
+print("=" * 80)
