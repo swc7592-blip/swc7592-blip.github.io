@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 인플레이션 2% 목표 달성 가능성과 시장 영향
+title: "인플레이션 2% 목표 달성 가능성과 시장 영향"
 date: 2026-02-13 11:45:00 +0900
 categories: [macro-economy, inflation]
 tags: [인플레이션, 연준, CPI, 투자전략, 시장영향]

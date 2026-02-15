@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 신흥국 경제 2026년 전망: 4.2% 성장과 기회
+title: "신흥국 경제 2026년 전망: 4.2% 성장과 기회"
 date: 2026-02-13 12:10:00 +0900
 categories: [macro-economy, emerging-markets]
 tags: [신흥국, BRICS, 인도, 브라질, 투자전략]
