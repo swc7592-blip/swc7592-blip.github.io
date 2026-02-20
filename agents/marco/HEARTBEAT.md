@@ -1,5 +1,67 @@
-# HEARTBEAT.md
+# HEARTBEAT.md - 마콜 (Marco)의 주기적 작업
 
-# Keep this file empty (or with only comments) to skip heartbeat API calls.
+## 🔄 순환식 하트비트 패턴 (Rotating Heartbeat Pattern)
 
-# Add tasks below when you want the agent to check something periodically.
+`heartbeat-state.json`를 읽고 가장 지체된 작업을 실행하세요. 마콜은 6시간마다 cron job으로 자동 실행되므로, 하트비트는 백그라운드 모니터링용입니다.
+
+**케이던스 (Cadences):**
+- **Keyword Trends:** 24시간마다 - 키워드 트렌드 모니터링
+- **Traffic Analysis:** 24시간마다 - 블로그 트래픽 확인
+- **Competitor Check:** 24시간마다 - 경쟁사 콘텐츠 분석
+- **Memory:** 매 7번째 사용자 메시지 또는 메모리 항목 25개 초과 시
+
+**프로세스:**
+1. `heartbeat-state.json`에서 타임스탬프 로드
+2. 가장 지체된 작업 계산
+3. 해당 작업 실행
+4. 타임스탬프 업데이트
+5. 실행 가능한 항목이 있으면 보고, 없으면 `HEARTBEAT_OK`
+
+---
+
+## 작업 세부 사항
+
+### 키워드 트렌드 모니터링
+**주기:** 24시간마다
+**작업:**
+- 구글 트렌드에서 블로그 관련 키워드 확인
+- 상승 중인 키워드 식별
+- 보고: 상위 5개 상승 키워드
+
+### 트래픽 분석
+**주기:** 24시간마다
+**작업:**
+- 최근 24시간 트래픽 확인
+- 상위 트래픽 소스 식별
+- 보고: 트래픽 요약 + 인사이트
+
+### 경쟁사 콘텐츠 분석
+**주기:** 24시간마다
+**작업:**
+- 경쟁사 최신 콘텐츠 확인
+- SEO 전략 비교
+- 보고: 우리 콘텐츠와의 차이점 + 기회
+
+### 메모리 유지보수
+**주기:** 매 7번째 사용자 메시지 또는 메모리 항목 25개 초과 시
+**작업:**
+1. 최근 `memory/YYYY-MM-DD.md` 파일 검토
+2. 장기적으로 보관할 가치가 있는 중요한 이벤트, 교훈, 통찰 식별
+3. `MEMORY.md`에 증류된 내용 업데이트
+4. 더 이상 관련 없는 오래된 정보 제거
+
+---
+
+## 💡 Cron Job 자동 실행
+
+마콜은 **6시간마다** cron job으로 자동 실행됩니다:
+
+**작업 내용:**
+1. 글로벌+지역별혼합 경제 뉴스 수집 (연준, GDP, 인플레이션, 금리, 원자재, 채용, 정책, 인터뷰)
+2. 키워드 트렌드 분석
+3. SEO에 최적화된 블로그 포스트 생성
+4. Git add/commit/push
+5. 사장님에게 보고
+
+**Target Channel:** Discord #블로그 (1469286422283288576)
+
