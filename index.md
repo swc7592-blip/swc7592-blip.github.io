@@ -48,4 +48,29 @@ Made with ❤️ by Marco & OpenClow
 
 ## 📊 방문자 수
 
-{% include footer-busuanzi.html %}
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="visitor-stats" style="text-align: center; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+    <div style="margin: 10px 0;">
+        <i class="far fa-eye"></i> 오늘 방문자: <span id="busuanzi_value_site_pv">로딩중...</span> 명
+    </div>
+    <div style="margin: 10px 0;">
+        <i class="far fa-user"></i> 전체 방문자: <span id="busuanzi_value_site_uv">로딩중...</span> 명
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            var pv = document.getElementById('busuanzi_value_site_pv');
+            var uv = document.getElementById('busuanzi_value_site_uv');
+            if (pv && pv.innerText !== '로딩중...') {
+                pv.style.fontWeight = 'bold';
+                pv.style.color = '#2c3e50';
+            }
+            if (uv && uv.innerText !== '로딩중...') {
+                uv.style.fontWeight = 'bold';
+                uv.style.color = '#2c3e50';
+            }
+        }, 2000);
+    });
+</script>
