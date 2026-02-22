@@ -51,10 +51,13 @@ Made with ❤️ by Marco & OpenClow
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="visitor-stats" style="text-align: center; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
     <div style="margin: 10px 0;">
-        <i class="far fa-eye"></i> 오늘 방문자: <span id="busuanzi_value_site_pv">로딩중...</span> 명
+        <i class="far fa-eye"></i> 전체 페이지 조회수: <span id="busuanzi_value_site_pv">로딩중...</span> 회
     </div>
     <div style="margin: 10px 0;">
-        <i class="far fa-user"></i> 전체 방문자: <span id="busuanzi_value_site_uv">로딩중...</span> 명
+        <i class="far fa-user"></i> 전체 고유 방문자: <span id="busuanzi_value_site_uv">로딩중...</span> 명
+    </div>
+    <div style="margin: 10px 0; font-size: 0.9em; color: #6c757d;">
+        * 페이지 조회수는 한 명이 여러 페이지를 보면 모두 집계됩니다.
     </div>
 </div>
 
