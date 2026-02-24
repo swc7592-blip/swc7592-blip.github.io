@@ -1,0 +1,135 @@
+{
+  "commodities": {
+    "Gold": {
+      "price": 5255.3,
+      "change": 196.0,
+      "change_pct": 3.87,
+      "high_5d": 5255.9,
+      "low_5d": 4869.5,
+      "ticker": "GC=F"
+    },
+    "Silver": {
+      "price": 88.71,
+      "change": 6.43,
+      "change_pct": 7.81,
+      "high_5d": 88.86,
+      "low_5d": 75.7,
+      "ticker": "SI=F"
+    },
+    "WTI Crude": {
+      "price": 66.49,
+      "change": 0.1,
+      "change_pct": 0.15,
+      "high_5d": 67.28,
+      "low_5d": 62.12,
+      "ticker": "CL=F"
+    },
+    "Brent Crude": {
+      "price": 71.3,
+      "change": -0.46,
+      "change_pct": -0.64,
+      "high_5d": 72.32,
+      "low_5d": 67.34,
+      "ticker": "BZ=F"
+    },
+    "Natural Gas": {
+      "price": 2.92,
+      "change": -0.13,
+      "change_pct": -4.27,
+      "high_5d": 3.15,
+      "low_5d": 2.91,
+      "ticker": "NG=F"
+    },
+    "Copper": {
+      "price": 5.8,
+      "change": -0.03,
+      "change_pct": -0.57,
+      "high_5d": 5.9,
+      "low_5d": 5.67,
+      "ticker": "HG=F"
+    },
+    "Corn": {
+      "price": 440.75,
+      "change": 13.25,
+      "change_pct": 3.1,
+      "high_5d": 445.0,
+      "low_5d": 424.0,
+      "ticker": "ZC=F"
+    },
+    "Soybeans": {
+      "price": 1150.25,
+      "change": 12.75,
+      "change_pct": 1.12,
+      "high_5d": 1165.0,
+      "low_5d": 1121.5,
+      "ticker": "ZS=F"
+    },
+    "Wheat": {
+      "price": 574.0,
+      "change": 0.5,
+      "change_pct": 0.09,
+      "high_5d": 583.5,
+      "low_5d": 538.0,
+      "ticker": "ZW=F"
+    },
+    "Bitcoin": {
+      "price": 64626.23,
+      "change": -3033.16,
+      "change_pct": -4.48,
+      "high_5d": 68657.7,
+      "low_5d": 63950.81,
+      "ticker": "BTC-USD"
+    },
+    "Ethereum": {
+      "price": 1866.23,
+      "change": -91.57,
+      "change_pct": -4.68,
+      "high_5d": 1994.83,
+      "low_5d": 1846.21,
+      "ticker": "ETH-USD"
+    }
+  },
+  "indices": {
+    "S&P 500": {
+      "price": 6837.75,
+      "change": -71.76,
+      "change_pct": -1.04
+    },
+    "NASDAQ": {
+      "price": 22627.27,
+      "change": -258.8,
+      "change_pct": -1.13
+    },
+    "Dow Jones": {
+      "price": 48804.06,
+      "change": -821.91,
+      "change_pct": -1.66
+    },
+    "KOSPI": {
+      "price": 5846.09,
+      "change": 37.56,
+      "change_pct": 0.65
+    },
+    "Nikkei 225": {
+      "price": 56825.7,
+      "change": -642.13,
+      "change_pct": -1.12
+    },
+    "DAX": {
+      "price": 24991.97,
+      "change": -268.72,
+      "change_pct": -1.06
+    },
+    "Shanghai Composite": {
+      "price": 4082.07,
+      "change": -51.95,
+      "change_pct": -1.26
+    },
+    "Hang Seng": {
+      "price": 27081.91,
+      "change": 668.56,
+      "change_pct": 2.53
+    }
+  },
+  "timestamp": "2026-02-24T06:08:28.007260"
+}

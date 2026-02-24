@@ -1,0 +1,41 @@
+{
+  "microstrategy": {
+    "name": "MicroStrategy (MSTR)",
+    "symbol": "MSTR",
+    "bitcoin": {
+      "current": 714644,
+      "date": "2026-02-09",
+      "percentageOfSupply": 3.2
+    },
+    "website": "https://www.microstrategy.com/en/bitcoin",
+    "dataSource": "https://bitbo.io/treasuries/microstrategy/",
+    "history": [
+      { "date": "2024-01-01", "bitcoin": 189150 },
+      { "date": "2024-06-01", "bitcoin": 226331 },
+      { "date": "2024-09-01", "bitcoin": 252220 },
+      { "date": "2024-12-01", "bitcoin": 471107 },
+      { "date": "2025-01-01", "bitcoin": 471107 },
+      { "date": "2025-06-01", "bitcoin": 471107 },
+      { "date": "2025-09-01", "bitcoin": 471107 },
+      { "date": "2025-12-01", "bitcoin": 621700 },
+      { "date": "2026-01-01", "bitcoin": 673783 },
+      { "date": "2026-02-09", "bitcoin": 714644 }
+    ]
+  },
+  "bitmine": {
+    "name": "BitMine Immersion Technologies (BMNR)",
+    "symbol": "BMNR",
+    "bitcoin": 193,
+    "ethereum": {
+      "current": 4325739,
+      "date": "2026-02-01"
+    },
+    "totalValue": 8500000000,
+    "website": "https://www.bitminetech.io/",
+    "dataSource": "https://www.coingecko.com/en/treasuries/companies/bitmine",
+    "history": [
+      { "date": "2025-10-12", "bitcoin": 192, "ethereum": 3032188 },
+      { "date": "2026-02-01", "bitcoin": 193, "ethereum": 4325739 }
+    ]
+  }
+}

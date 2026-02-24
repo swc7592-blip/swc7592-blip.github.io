@@ -1,0 +1,71 @@
+title: Macro Claw
+description: 매크로 경제 & OpenClaw 활용 가이드
+author: thanksdany
+lang: ko
+timezone: Asia/Seoul
+
+theme: minima
+
+markdown: kramdown
+highlighter: rouge
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO 설정
+twitter:
+  username: macro_claw
+  card: summary
+
+social:
+  name: Macro Claw
+  links:
+    - https://github.com/swc7592-blip
+
+# 구글 애널리틱스
+google_analytics: G-6PG72MC66V
+
+# 구글 사이트 인증
+google_site_verification: sn2zOc0-NBlf8-TkEWrPvEFFobqfaW1k9KVbxZmmB-U
+
+# GitHub Analytics (Daily 방문자 추적)
+github: [metadata]
+
+# 기본 설정
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+      permalink: /:categories/:year/:month/:day/:title/
+
+# Collections
+collections:
+  tags:
+    output: true
+    permalink: /tags/:path/
+future: true
+future: true
+
+# --- 에이전트 파일 헤더 노출 방지 설정 ---
+exclude:
+  - agents/
+  - memory/
+  - skills/
+  - fix_titles.py
+  - fix_titles_strong.py
+  - market_data.txt
+
+# --- [관리자 지침] 에이전트 데이터 노출 금지 ---
+exclude:
+  - agents/
+  - memory/
+  - skills/
+  - Gemfile
+  - Gemfile.lock
+  - fix_titles.py
+  - fix_titles_strong.py
+  - market_data.txt
