@@ -33,6 +33,10 @@ google_site_verification: sn2zOc0-NBlf8-TkEWrPvEFFobqfaW1k9KVbxZmmB-U
 # GitHub Analytics (Daily 방문자 추적)
 github: [metadata]
 
+# 기본 URL 설정
+url: "https://swc7592-blip.github.io"
+baseurl: ""
+
 # 기본 설정
 defaults:
   - scope:
