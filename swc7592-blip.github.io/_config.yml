@@ -51,13 +51,19 @@ collections:
   tags:
     output: true
     permalink: /tags/:path/
-    future: true
+future: true
 
 # 에이전트 및 시스템 파일 제외
 exclude:
-  - vendor
-  - vendor/bundle
-  - vendor/cache
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
   - AGENTS.md
   - BOOTSTRAP.md
   - HEARTBEAT.md
@@ -65,11 +71,6 @@ exclude:
   - SOUL.md
   - TOOLS.md
   - USER.md
-  - agents
-  - memory
-  - skills
-  - Gemfile
-  - Gemfile.lock
-  - fix_titles.py
-  - fix_titles_strong.py
-  - market_data.txt
+  - agents/
+  - memory/
+  - skills/
