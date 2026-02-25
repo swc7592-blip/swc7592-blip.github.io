@@ -44,7 +44,6 @@ defaults:
       type: "posts"
     values:
       layout: post
-      permalink: /:year/:month/:day/:slug/
 
 # Collections
 collections:
@@ -74,3 +73,7 @@ exclude:
   - agents/
   - memory/
   - skills/
+
+# 헤더 페이지 설정 - 시스템 파일 메뉴에서 제외
+header_pages:
+  - index.md
