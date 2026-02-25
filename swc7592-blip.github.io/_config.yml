@@ -56,6 +56,8 @@ future: true
 
 # 에이전트 및 시스템 파일 제외
 exclude:
+  - vendor
+  - vendor/bundle
   - AGENTS.md
   - BOOTSTRAP.md
   - HEARTBEAT.md
@@ -63,10 +65,9 @@ exclude:
   - SOUL.md
   - TOOLS.md
   - USER.md
-  - vendor/
-  - agents/
-  - memory/
-  - skills/
+  - agents
+  - memory
+  - skills
   - Gemfile
   - Gemfile.lock
   - fix_titles.py
