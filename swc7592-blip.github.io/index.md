@@ -3,9 +3,6 @@ layout: home
 title: Macro Claw
 ---
 
-<!-- 네비게이션 -->
-{% include navigation.html %}
-
 # 📊 Macro Claw
 
 ## 매크로 경제 & OpenClow 활용 가이드
