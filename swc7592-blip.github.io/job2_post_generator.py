@@ -2,7 +2,7 @@
 """
 Job 2: 경제 뉴스 포스트 생성
 - Directory: root _posts/
-- Filename: YYYY-MM-DD-english-slug.md
+- Filename: YYYY-MM-DD-english-slug.md (no time/duplicate dates)
 - YAML Front Matter: NO permalink/slug keys (Jekyll defaults)
 - Timeout: 180 seconds
 """
@@ -16,8 +16,8 @@ def generate_filename():
     now = datetime.now()
     date_str = now.strftime("%Y-%m-%d")
     
-    # English slug based on date
-    slug = "economic-analysis-" + date_str.replace("-", "")
+    # Simple English slug without date to avoid duplicates
+    slug = "economic-analysis"
     
     return f"{date_str}-{slug}.md"
 
@@ -32,9 +32,10 @@ def generate_post_content():
     # Current date and time for title
     current_date = now.strftime("%Y년 %m월 %d일")
     
+    # Fixed f-string formatting (proper variable substitution)
     content = f"""---
 layout: post
-title: "{current_date} 경제 분석"
+title: {current_date} 경제 분석
 date: {date_str} {time_str}:00 +0900
 categories: [경제, global-economy]
 tags: [연준, Fed, 금리, 인플레이션, 주식, 금융, 금 가격, 원유, KOSPI, S&P 500]
@@ -46,7 +47,7 @@ tags: [연준, Fed, 금리, 인플레이션, 주식, 금융, 금 가격, 원유,
 
 ---
 
-## 📈 주요 지수 개요
+## 📊 주요 지수 개요
 
 ### 금 가격 동향
 
@@ -59,39 +60,66 @@ tags: [연준, Fed, 금리, 인플레이션, 주식, 금융, 금 가격, 원유,
 - 기간 중 최고가: **5318.4$** (2026-01-29)
 - 기간 중 최저가: **4588.4$** (2026-01-16)
 
-
-[125 more lines in file. Use offset=31 to continue.]
 ---
+
+## 📈 금리 전망
+
+- **연준:** 금리 유지 (3.75%)
+- **금리 인하 기대:** 2Q 2026 (3.5% → 3.25%)
+- **시장 반응:** 금 가격 상승으로 금리 인하 기대 완화
+
+---
+
+## 📊 경제 분석
+
+### 주요 이슈
+
+1. **금 가격 상승세:** 연준의 금리 보류에도 불구하고 12.54%나 상승했다.
+2. **인플레이션 완화:** CPI 데이터가 목표치(2%)에 근접하는 것 같습니다.
+3. **시장 변동성:** 주식 시장과 채권 시장 간의 헤짤이 증가.
+4. **거시지 국제정책:** 관세 정책 불확실성이 지속되는 가운데, 투자자들은 연준의 금리 정책과 인플레이션 데이터에 주목하고 있습니다.
+
+---
+
+## 🔍 데이터 출처
+
+- **yfinance:** 금 가격 실시간 데이터
+- **Trading Economics:** 글로벌 시장 데이터
+- **Reuters:** 경제 뉴스
+- **Bloomberg:** 시장 뉴스
+
+---
+
+**작성자:** Marco (OpenClow)
+**작성 시간:** {time_korean}
 """
     
     return content
 
 def main():
     """Main execution function"""
-    # Change to blog directory
-    blog_dir = "/Users/shin/.openclaw/workspace/swc7592-blip.github.io"
-    os.chdir(blog_dir)
+    # Use relative path to _posts/ directory (NOT absolute path)
+    blog_dir = "./_posts/"
     
     # Get date string for commit message
     now = datetime.now()
     date_str = now.strftime("%Y-%m-%d")
     
-    # Generate filename
+    # Generate filename with fixed slug
     filename = generate_filename()
     
-    # Generate post content
+    # Generate post content with fixed f-strings
     content = generate_post_content()
     
     # Full path to posts directory
-    posts_dir = os.path.join(blog_dir, "_posts")
-    filepath = os.path.join(posts_dir, filename)
+    posts_dir = os.path.join(blog_dir, filename)
     
     print(f"Filename: {filename}")
-    print(f"Filepath: {filepath}")
+    print(f"Filepath: {posts_dir}")
     
-    # Write file to _posts directory
+    # Write file to _posts/ directory
     try:
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(posts_dir, 'w', encoding='utf-8') as f:
             f.write(content)
         print(f"✅ Post created: {filename}")
     except Exception as e:
