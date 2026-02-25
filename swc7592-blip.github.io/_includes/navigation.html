@@ -1,0 +1,70 @@
+<nav class="site-nav">
+  <div class="nav-container">
+    <a href="{{ site.baseurl }}/" class="{% if page.url == '/' %}active{% endif %}">
+      <i class="fas fa-home"></i> 홈
+    </a>
+    <a href="{{ site.baseurl }}/#%EA%B8%80%EB%A1%9C" class="{% if page.url contains '/#%EA%B8%80%EB%A1%9C' %}active{% endif %}">
+      <i class="fas fa-chart-line"></i> 주제
+    </a>
+    <a href="{{ site.baseurl }}/#%EA%B8%80%EB%A1%9C-%EA%B8%80%EB%A1%9C" class="{% if page.url contains '/#%EA%B8%80%EB%A1%9C-%EA%B8%80%EB%A1%9C' %}active{% endif %}">
+      <i class="fas fa-chart-bar"></i> 최신 글
+    </a>
+    <a href="https://github.com/swc7592-blip/swc7592-blip.github.io" target="_blank">
+      <i class="fab fa-github"></i> GitHub
+    </a>
+  </div>
+</nav>
+
+<style>
+  .site-nav {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .site-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .site-nav a:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .site-nav a.active {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 600px) {
+    .nav-container {
+      flex-direction: column;
+    }
+    .site-nav a {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script src="https://kit.fontawesome.com/759c92846f.js" crossorigin="anonymous"></script>
