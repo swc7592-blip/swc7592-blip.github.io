@@ -1,8 +1,0 @@
-
-# --- 에이전트 작업 파일 자동 업로드 방지 ---
-agents/
-memory/
-skills/
-Workspace/
-*.pyc
-__pycache__/
