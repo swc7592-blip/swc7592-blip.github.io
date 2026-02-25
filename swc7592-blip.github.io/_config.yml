@@ -44,13 +44,14 @@ defaults:
       type: "posts"
     values:
       layout: post
+      permalink: /:categories/:year/:month/:day/:title/
 
 # Collections
 collections:
   tags:
     output: true
     permalink: /tags/:path/
-future: true
+    future: true
 
 # 에이전트 및 시스템 파일 제외
 exclude:
@@ -74,6 +75,6 @@ exclude:
   - memory/
   - skills/
 
-# 헤더 페이지 설정 - 시스템 파일만 메뉴에 표시
+# 헤더 페이지 설정 - 시스템 파일 메뉴에서 제외
 header_pages:
   - index.md
