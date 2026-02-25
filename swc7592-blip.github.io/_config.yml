@@ -54,11 +54,20 @@ collections:
 future: true
 future: true
 
-# --- 에이전트 파일 헤더 노출 방지 설정 ---
+# --- [관리자 지침] 에이전트 데이터 노출 금지 ---
 exclude:
+  - AGENTS.md
+  - BOOTSTRAP.md
+  - HEARTBEAT.md
+  - IDENTITY.md
+  - SOUL.md
+  - TOOLS.md
+  - USER.md
   - agents/
   - memory/
   - skills/
+  - Gemfile
+  - Gemfile.lock
   - fix_titles.py
   - fix_titles_strong.py
   - market_data.txt
