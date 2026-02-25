@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Test Success"
+slug: test-success
 date: 2026-02-14 12:00:00 +0900
 categories: test
 ---

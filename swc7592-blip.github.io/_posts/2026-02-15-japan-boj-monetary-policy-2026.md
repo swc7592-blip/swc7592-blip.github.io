@@ -1,5 +1,6 @@
 ---
 title: "2026년 일본 경제 정상화와 BOJ 금리 정책 분석"
+slug: 2026년-일본-경제-정상화와-boj-금리-정책-분석
 date: 2026-02-15 12:06
 categories: [macro, japan, central-bank]
 tags: [BOJ, 일본 경제, 금리 정책, 디플레이션, 사나에노믹스]

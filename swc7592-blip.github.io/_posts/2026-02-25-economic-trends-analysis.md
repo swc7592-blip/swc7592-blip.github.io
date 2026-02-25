@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드"
+slug: 2026년-2월-글로벌-경제-동향-분석-금리-정책과-시장-트렌드
 date: 2026-02-25 06:00:00 +0900
 categories: [economy, global-finance]
 tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금 가격, 원유, KOSPI, S&P 500]

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "글로벌 경제 리뷰: 원자재 가격 분석 및 시장 전망 (2026년 2월 25일)"
+slug: 글로벌-경제-리뷰-원자재-가격-분석-및-시장-전망-2026년-2월-25일
 date: 2026-02-25 06:05:00 +0900
 categories: [Global Economy, Commodity Analysis, Market Trends]
 tags: [경제, 원자재, 금융, 시장분석, 금리, 인플레이션]

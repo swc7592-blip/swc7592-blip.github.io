@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 12일 경제 뉴스 - 비트코인 BTC $95K (Yahoo Finance), 이더리움 ETH $3.2K"
+slug: 2026년-2월-12일-경제-뉴스-비트코인-btc-95k-yahoo-finance-이더리움-eth-32k
 date: 2026-02-12 02:50:00 +0900
 categories: [경제, 뉴스, 비트코인, 이더리움, Yahoo Finance]
 tags: [비트코인, 이더리움, BTC, ETH, 금, 원자재, NFP]

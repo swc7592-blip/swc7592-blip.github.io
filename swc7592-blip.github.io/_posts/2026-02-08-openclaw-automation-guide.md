@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "OpenClow로 경제 뉴스 자동화하기 - 완전 가이드"
+slug: openclow로-경제-뉴스-자동화하기-완전-가이드
 date: 2026-02-08 13:05:00 +0900
 categories: [OpenClow, 자동화, 튜토리얼]
 tags: [openclow, AI 자동화, 경제 뉴스, 블로그]

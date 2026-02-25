@@ -1,5 +1,6 @@
 ---
 title: "글로벌 경제 분석: 금 가격 급등, 관세 정책 불확실성, 시장 반응"
+slug: 글로벌-경제-분석-금-가격-급등-관세-정책-불확실성-시장-반응
 date: 2026-02-22 18:08:00 +0900
 categories: [economy, global-markets, analysis]
 tags: [Fed, ECB, 금리, 인플레이션, 원자재, 관세, 글로벌 경제, KOSPI]

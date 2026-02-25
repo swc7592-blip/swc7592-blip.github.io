@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "연준 금리인하 시나리오별 투자 전략 Fed Rate Cuts 2026"
+slug: 연준-금리인하-시나리오별-투자-전략-fed-rate-cuts-2026
 date: 2026-02-13 11:38:00 +0900
 categories: [macro-economy, fed, investment]
 tags: [연준, 금리인하, 투자전략, 주식, 채권, 원자재, 암호화폐]

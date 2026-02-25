@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 12일 경제 뉴스 - 금 $5,000 (Python yfinance), 비트코인 $95,990 (Python yfinance)"
+slug: 2026년-2월-12일-경제-뉴스-금-5000-python-yfinance-비트코인-95990-python-yfinance
 date: 2026-02-12 03:15:00 +0900
 categories: [경제, 뉴스, 금, 원자재, 비트코인, 이더리움, NFP]
 tags: [금, 금 가격, 원자재, 비트코인, 이더리움, Investing.com, Python yfinance, NFP, 연준]

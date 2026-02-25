@@ -1,5 +1,6 @@
 ---
 title: "2026년 2월 21일 오후 6시 경제 리포트: Nasdaq 5주 연속 하락 끊기, 사이버보안주 급락"
+slug: 2026년-2월-21일-오후-6시-경제-리포트-nasdaq-5주-연속-하락-끊기-사이버보안주-급락
 date: 2026-02-21 18:00:00 +0900
 categories: [경제, 글로벌 뉴스, 뉴스]
 tags: [연준, 주식시장, Nasdaq, 사이버보안, 인플레이션, PCE, SCOTUS 관세, 채용, 경제 뉴스, Anthropic, CrowdStrike, Akamai]
