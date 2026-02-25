@@ -82,3 +82,4 @@ exclude:
   - fix_titles.py
   - fix_titles_strong.py
   - market_data.txt
+ - vendor/
