@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: home
 title: Macro Claw
 ---
 
@@ -13,16 +13,12 @@ title: Macro Claw
 
 ---
 
-## 🚀 최신 글
+## 📈 주제
 
-<ul>
-  {% for post in site.posts limit:5 %}
-    <li style="margin-bottom: 10px;">
-      <a href="{{ site.url }}{{ post.url }}" style="font-weight:bold; color:#2196F3; text-decoration: none;">{{ post.title }}</a>
-      <br><small style="color:#888;">({{ post.date | date: "%Y년 %m월 %d일" }})</small>
-    </li>
-  {% endfor %}
-</ul>
+- **매크로 경제 분석** - 연준, GDP, 인플레이션 데이터 해석
+- **OpenClaw 가이드** - AI 자동화 튜토리얼
+- **시각화** - 경제 데이터를 눈에 보이게
+- **예측 모델** - AI로 트렌드 미리 보기
 
 ---
 
