@@ -54,7 +54,7 @@ collections:
 future: true
 future: true
 
-# --- [관리자 지침] 에이전트 데이터 노출 금지 ---
+# 에이전트 및 시스템 파일 제외
 exclude:
   - AGENTS.md
   - BOOTSTRAP.md
@@ -63,6 +63,7 @@ exclude:
   - SOUL.md
   - TOOLS.md
   - USER.md
+  - vendor/
   - agents/
   - memory/
   - skills/
@@ -71,15 +72,3 @@ exclude:
   - fix_titles.py
   - fix_titles_strong.py
   - market_data.txt
-
-# --- [관리자 지침] 에이전트 데이터 노출 금지 ---
-exclude:
-  - agents/
-  - memory/
-  - skills/
-  - Gemfile
-  - Gemfile.lock
-  - fix_titles.py
-  - fix_titles_strong.py
-  - market_data.txt
- - vendor/
