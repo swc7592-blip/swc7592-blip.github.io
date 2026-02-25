@@ -4,7 +4,7 @@ author: thanksdany
 lang: ko
 timezone: Asia/Seoul
 
-# URL 설정 (글 링크 오류를 해결해 줍니다!)
+# 주소가 두 번 겹치는 것을 막아주는 핵심 코드입니다!
 url: "https://swc7592-blip.github.io"
 baseurl: ""
 
@@ -18,7 +18,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-feed
 
-# 포스트 기본 설정 (글 클릭 시 정상적인 페이지로 넘어가게 해줍니다!)
 defaults:
   - scope:
       path: ""
