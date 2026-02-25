@@ -1,6 +1,6 @@
 ---
 title: "$"
-slug: 
+slug: global-economic-update-morning
 date: 2026-02-21 12:05:00 +0900
 categories: 매크로 경제
 tags: [연준, 금리, KOSPI, 금, 인플레이션, 글로벌 경제]

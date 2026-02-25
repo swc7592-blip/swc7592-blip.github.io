@@ -1,6 +1,6 @@
 ---
 title: "비트코인 10만 달러 돌파 2026년 암호화폐 시장 전망과 투자 전략"
-slug: 비트코인-10만-달러-돌파-2026년-암호화폐-시장-전망과-투자-전략
+slug: bitcoin-breakthrough-100k-milestone-analysis
 date: 2026-02-17 10:30:00 +0900
 categories:
   - 매크로 경제

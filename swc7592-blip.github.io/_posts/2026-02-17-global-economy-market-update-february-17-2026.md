@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 17일 글로벌 경제 및 시장 현황 요약"
-slug: 2026년-2월-17일-글로벌-경제-및-시장-현황-요약
+slug: global-economy-market-update-february-17-2026
 date: 2026-02-17 18:00:00 +0900
 categories: [macro-economy]
 tags: [연준, 인플레이션, 금리, 원자재, 비트코인]

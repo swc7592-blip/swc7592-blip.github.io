@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 12일 경제 뉴스 - 금 $5,000/oz (사장 기준), 원자재 전반 (Investing.com 참조)"
-slug: 2026년-2월-12일-경제-뉴스-금-5000oz-사장-기준-원자재-전반-investingcom-참조
+slug: economic-news-gold-50k-investing-real-time
 date: 2026-02-12 01:55:00 +0900
 categories: [경제, 뉴스, 금, 원자재, 암호화폐]
 tags: [금, 금 가격, 원자재, 비트코인, 연준, NFP, 인플레이션, 구리, 농산물]

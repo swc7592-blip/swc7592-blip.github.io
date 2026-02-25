@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 11일 경제 뉴스 - 금 $5,000/oz (사장님 기준), NFP +15만"
-slug: 2026년-2월-11일-경제-뉴스-금-5000oz-사장님-기준-nfp-15만
+slug: economic-news-gold-price-5000-nfp
 date: 2026-02-12 01:48:00 +0900
 categories: [경제, 뉴스, 금, NFP, 비트코인, 이더리움]
 tags: [금, 금 가격, NFP, 비트코인, 이더리움, 인플레이션, 연준, 원자재]

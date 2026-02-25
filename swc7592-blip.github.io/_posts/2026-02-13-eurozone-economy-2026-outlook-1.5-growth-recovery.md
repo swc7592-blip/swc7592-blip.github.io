@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "유로존 경제 2026년 전망 1.5 성장과 회복 기대"
-slug: 유로존-경제-2026년-전망-15-성장과-회복-기대
+slug: eurozone-economy-2026-outlook-1.5-growth-recovery
 date: 2026-02-13 12:02:00 +0900
 categories: [macro-economy, eurozone]
 tags: [유로존, ECB, 경제성장, 금리인하, 독일, 투자전략]

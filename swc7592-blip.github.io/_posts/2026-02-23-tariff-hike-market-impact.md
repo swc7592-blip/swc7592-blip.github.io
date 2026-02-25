@@ -1,6 +1,6 @@
 ---
 title: "트럼프 글로벌 관세 15% 인상, 인도 무역 협상 연기, 시장 반응 분석"
-slug: 트럼프-글로벌-관세-15-인상-인도-무역-협상-연기-시장-반응-분석
+slug: tariff-hike-market-impact
 date: 2026-02-23 00:05:00 +0900
 categories: [economy, global-trade, policy]
 tags: [관세, Trump, 인도, Fed, 금리, 인플레이션, 글로벌 경제, KOSPI]

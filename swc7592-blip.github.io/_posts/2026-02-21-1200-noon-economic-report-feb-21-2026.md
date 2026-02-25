@@ -1,6 +1,6 @@
 ---
 title: "$"
-slug: 
+slug: 1200-noon-economic-report-feb-21-2026
 date: 2026-02-21 12:00:00 +0900
 categories: [경제, 글로벌 뉴스, 뉴스]
 tags: [연준, 금리, 인플레이션, SCOTUS 관세, S&P 500, 코스피, 원달러, PCE, CPI, 기술주, 경제 뉴스]

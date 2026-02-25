@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 11일 경제 뉴스 요약 - NFP와 원자재시장"
-slug: 2026년-2월-11일-경제-뉴스-요약-nfp와-원자재시장
+slug: economic-news-nfp-commodities
 date: 2026-02-11 12:42:00 +0900
 categories: [경제, 뉴스, 연준, NFP]
 tags: [NFP, 원자재, 금리, 연준, 삼성]

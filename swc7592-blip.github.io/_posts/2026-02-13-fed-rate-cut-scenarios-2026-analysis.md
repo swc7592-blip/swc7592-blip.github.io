@@ -1,6 +1,6 @@
 ---
 title: "2026년 연준 금리 인하 시나리오 분석 Fed Rate Cuts Guide"
-slug: 2026년-연준-금리-인하-시나리오-분석-fed-rate-cuts-guide
+slug: fed-rate-cut-scenarios-2026-analysis
 date: 2026-02-13 12:00:00 +0900
 categories: [미국 경제, 연준, 금리]
 tags: [Fed, 금리 인하, 인플레이션, GDP, 채용 시장]

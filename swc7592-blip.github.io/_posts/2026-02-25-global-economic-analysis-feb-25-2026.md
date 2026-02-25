@@ -1,6 +1,6 @@
 ---
 title: "글로벌 경제 라이브 분석 (2026년 2월 25일): 금 1% 하락, 원자재 강세, 비트코인 조정"
-slug: 글로벌-경제-라이브-분석-2026년-2월-25일-금-1-하락-원자재-강세-비트코인-조정
+slug: global-economic-analysis-feb-25-2026
 date: 2026-02-25 00:15:00 +0900
 categories: [Economy, Analysis, Commodities]
 tags: [Federal Reserve, ECB, BOJ, PBOC, Gold, Oil, Bitcoin, Economic News, Inflation, Interest Rates, Commodity Prices, Global Markets]

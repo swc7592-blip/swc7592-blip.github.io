@@ -1,6 +1,6 @@
 ---
 title: "아시아 경제 급상승: KOSPI 51% 폭등과 은 63% 상승의 시그널"
-slug: 아시아-경제-급상승-kospi-51-폭등과-은-63-상승의-시그널
+slug: asia-economy-surge-kospi-silver
 date: 2026-02-22 12:00:00 +0900
 categories: [경제, 아시아, 시장분석]
 tags: [금융, 경제트렌드, 아시아경제, KOSPI, 원자재, 환율, 은 가격, 일본경제, 중국경제]

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "중국 경제 2026년 전망 4.8 성장 가능성과 부동산 위기"
-slug: 중국-경제-2026년-전망-48-성장-가능성과-부동산-위기
+slug: china-economy-2026-outlook-4.8-growth-possibility
 date: 2026-02-13 11:58:00 +0900
 categories: [macro-economy, china]
 tags: [중국경제, GDP성장, 부동산, 수출, 투자전략]

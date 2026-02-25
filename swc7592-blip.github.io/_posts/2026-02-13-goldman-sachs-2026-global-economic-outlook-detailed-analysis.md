@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "골드만삭스 2026년 세계 경제 전망 상세 분석 글로벌 GDP 2.8 성장"
-slug: 골드만삭스-2026년-세계-경제-전망-상세-분석-글로벌-gdp-28-성장
+slug: goldman-sachs-2026-global-economic-outlook-detailed-analysis
 date: 2026-02-13 11:52:00 +0900
 categories: [macro-economy, global-outlook]
 tags: [골드만삭스, 세계경제, GDP, 미국경제, 중국경제, 투자전략]

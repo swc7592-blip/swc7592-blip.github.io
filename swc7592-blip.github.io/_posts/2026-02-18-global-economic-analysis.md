@@ -1,6 +1,6 @@
 ---
 title: "글로벌 경제 분석 연준 금리 보류, 일본 금리 인상 기대, 원자재 상승세"
-slug: 글로벌-경제-분석-연준-금리-보류-일본-금리-인상-기대-원자재-상승세
+slug: global-economic-analysis
 date: 2026-02-18 18:00:00 +0900
 categories: [Economy, Market, Analysis]
 tags: [연준, 금리, 일본, 원자재, 비트코인, 경제]

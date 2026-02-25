@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "인플레이션 현황과 전망 - 실시간 데이터 2.5 목표 2"
-slug: 인플레이션-현황과-전망-실시간-데이터-25-목표-2
+slug: inflation-realtime
 date: 2026-02-08 20:40:00 +0900
 categories: [경제, 인플레이션, 연준]
 tags: [인플레이션, CPI, 물가, 연준, 경제]

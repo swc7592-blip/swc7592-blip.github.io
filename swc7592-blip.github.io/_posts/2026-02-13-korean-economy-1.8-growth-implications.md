@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "한국 경제 1.8 성장의 시사점 수출 둔화와 내수 회복의 균형"
-slug: 한국-경제-18-성장의-시사점-수출-둔화와-내수-회복의-균형
+slug: korean-economy-1.8-growth-implications
 date: 2026-02-13 09:20:00 +0900
 categories: [macro-economy, korea]
 tags: [한국경제, 성장률, KDI, OECD, 수출, 내수, 투자전략]

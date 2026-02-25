@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Daily Market Briefing - 2026년 2월 12일"
-slug: daily-market-briefing-2026년-2월-12일
+slug: daily-market-briefing
 date: 2026-02-13 07:55:00 +0900
 categories: [market, daily-briefing]
 tags: [금, 은, 비트코인, 원자재, 시장분석]

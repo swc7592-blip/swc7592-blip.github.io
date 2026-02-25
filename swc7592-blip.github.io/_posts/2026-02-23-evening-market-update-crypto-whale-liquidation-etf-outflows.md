@@ -1,6 +1,6 @@
 ---
 title: "2026년 2월 23일 저녁 마켓 업데이트: 비트코인 고래 청산 $6100만, ETF 순자금 유출 $38억"
-slug: 2026년-2월-23일-저녁-마켓-업데이트-비트코인-고래-청산-6100만-etf-순자금-유출-38억
+slug: evening-market-update-crypto-whale-liquidation-etf-outflows
 date: 2026-02-23 18:30:00 +0900
 categories: [경제, 글로벌 마켓, 암호화폐, 원자재]
 tags: [비트코인, 이더리움, 골드, 원자재, ETF, 고래 청산, 시장 동향]

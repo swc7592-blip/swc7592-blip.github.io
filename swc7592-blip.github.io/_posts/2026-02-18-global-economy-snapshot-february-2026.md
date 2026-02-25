@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "2026년 2월 글로벌 경제 스냅샷 인플레이션 완화와 중앙은행 정책"
-slug: 2026년-2월-글로벌-경제-스냅샷-인플레이션-완화와-중앙은행-정책
+slug: global-economy-snapshot-february-2026
 date: 2026-02-18 09:00:00 +0900
 categories: [매크로 경제, 글로벌 경제]
 tags: [연준, 금리, 인플레이션, GDP, 중국, 유로존]

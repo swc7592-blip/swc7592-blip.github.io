@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "글로벌 시장 업데이트 원자재 하락세 속 비트코인 안정세"
-slug: 글로벌-시장-업데이트-원자재-하락세-속-비트코인-안정세
+slug: global-market-update-commodities-crypto-analysis
 date: 2026-02-16 18:00:00 +0900
 categories: [경제 분석, 시장 동향]
 tags: [원자재, 비트코인, 경제 뉴스, 투자, 매크로 경제]

@@ -1,6 +1,6 @@
 ---
 title: "오전 경제 리뷰 금·은 대폭 상승, 유가 3 급등, 비트코인 소폭 하락"
-slug: 오전-경제-리뷰-금은-대폭-상승-유가-3-급등-비트코인-소폭-하락
+slug: global-economic-analysis-early-morning
 date: 2026-02-19 00:15:00 +0900
 categories: [Economy, Market, Analysis]
 tags: [연준, 금리, 원자재, 비트코인, 경제, 오전시장]

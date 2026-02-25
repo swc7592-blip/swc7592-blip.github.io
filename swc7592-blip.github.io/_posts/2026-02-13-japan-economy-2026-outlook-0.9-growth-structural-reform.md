@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "일본 경제 2026년 전망 0.9 성장과 구조 개혁"
-slug: 일본-경제-2026년-전망-09-성장과-구조-개혁
+slug: japan-economy-2026-outlook-0.9-growth-structural-reform
 date: 2026-02-13 12:06:00 +0900
 categories: [macro-economy, japan]
 tags: [일본경제, BOJ, 구조개혁, 엔화, 투자전략]
