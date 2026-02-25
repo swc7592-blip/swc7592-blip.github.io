@@ -27,14 +27,14 @@ title: Macro Claw
 
 ## 🚀 최신 글
 
-<div class="posts">
+<ul>
   {% for post in site.posts limit:5 %}
-  <article>
-    <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-    <time datetime="{{ post.date }}">{{ post.date | date: "%Y년 %m월 %d일" }}</time>
-  </article>
+    <li>
+      <time datetime="{{ post.date }}">{{ post.date | date: "%Y년 %m월 %d일" }}</time>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
   {% endfor %}
-</div>
+</ul>
 
 ---
 
