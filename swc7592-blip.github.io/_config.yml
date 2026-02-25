@@ -1,68 +1,28 @@
 title: Macro Claw
-description: 매크로 경제 & OpenClaw 활용 가이드
+description: 매크로 경제 & OpenClow 활용 가이드
 author: thanksdany
 lang: ko
 timezone: Asia/Seoul
 
 theme: minima
 
-markdown: kramdown
-highlighter: rouge
+header_pages:
+  - index.md
 
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
 
-# SEO 설정
-twitter:
-  username: macro_claw
-  card: summary
-
-social:
-  name: Macro Claw
-  links:
-    - https://github.com/swc7592-blip
-
-# 구글 애널리틱스
-google_analytics: G-6PG72MC66V
-
-# 구글 사이트 인증
-google_site_verification: sn2zOc0-NBlf8-TkEWrPvEFFobqfaW1k9KVbxZmmB-U
-
-# GitHub Analytics (Daily 방문자 추적)
-github: [metadata]
-
-# 기본 URL 설정
-url: "https://swc7592-blip.github.io"
-baseurl: ""
-
-# 기본 설정
-defaults:
-  - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: post
-
-# Collections
-collections:
-  tags:
-    output: true
-    permalink: /tags/:path/
-    future: true
-
-# 에이전트 및 시스템 파일 제외
 exclude:
-  - .sass-cache/
-  - .jekyll-cache/
-  - gemfiles/
+  - vendor/
+  - vendor/bundle/
+  - .github/
+  - agents/
+  - memory/
+  - skills/
   - Gemfile
   - Gemfile.lock
-  - node_modules/
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
   - AGENTS.md
   - BOOTSTRAP.md
   - HEARTBEAT.md
@@ -70,10 +30,3 @@ exclude:
   - SOUL.md
   - TOOLS.md
   - USER.md
-  - agents/
-  - memory/
-  - skills/
-
-# 헤더 페이지 설정 - 시스템 파일만 메뉴에서 표시
-header_pages:
-  - index.md
