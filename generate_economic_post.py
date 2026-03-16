@@ -16,9 +16,12 @@ import json
 plt.rcParams['font.sans-serif'] = ['AppleGothic', 'Malgun Gothic', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
-# Configuration
-OUTPUT_DIR = "/Users/shin/.openclaw/workspace/swc7592-blip.github.io/assets/images/2026-02-25"
-POST_PATH = "/Users/shin/.openclaw/workspace/swc7592-blip.github.io/_posts/2026-02-25-economic-trends-analysis.md"
+# Dynamic date configuration
+today = datetime.now()
+date_str = today.strftime('%Y-%m-%d')
+year_month_str = today.strftime('%Y년 %m월')
+OUTPUT_DIR = f"/Users/shin/.openclaw/workspace/swc7592-blip.github.io/assets/images/{date_str}"
+POST_PATH = f"/Users/shin/.openclaw/workspace/swc7592-blip.github.io/_posts/{date_str}-economic-trends-analysis.md"
 
 # Instruments to fetch
 INSTRUMENTS = {
@@ -30,7 +33,7 @@ INSTRUMENTS = {
 }
 
 def create_output_directory():
-    """Create the output directory if it doesn't exist."""
+    """Create output directory if it doesn't exist."""
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     print(f"Output directory: {OUTPUT_DIR}")
 
@@ -38,9 +41,9 @@ def fetch_data():
     """Fetch data for all instruments over the last 30 days."""
     end_date = datetime.now()
     start_date = end_date - timedelta(days=60)  # Get more data to ensure we have 30 trading days
-    
+
     print(f"Fetching data from {start_date.date()} to {end_date.date()}...")
-    
+
     data = {}
     for key, info in INSTRUMENTS.items():
         print(f"  Fetching {info['title']} ({info['ticker']})...")
@@ -58,91 +61,91 @@ def fetch_data():
         except Exception as e:
             print(f"    ✗ Error fetching {info['title']}: {e}")
             data[key] = None
-    
+
     return data
 
 def create_chart(data):
     """Create and save charts for each instrument."""
     chart_files = {}
-    
+
     for key, item in data.items():
         if item is None:
             continue
-        
+
         df = item['df']
         info = item['info']
-        
+
         # Create figure
         fig, ax = plt.subplots(figsize=(12, 6))
-        
+
         # Plot data
         if 'Close' in df.columns:
             ax.plot(df.index, df['Close'], linewidth=2, color='#2563eb', label='종가')
         elif 'Adj Close' in df.columns:
             ax.plot(df.index, df['Adj Close'], linewidth=2, color='#2563eb', label='수정 종가')
-        
+
         # Format x-axis
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
         plt.xticks(rotation=45)
-        
+
         # Labels and title
         ax.set_xlabel('날짜', fontsize=12)
         ax.set_ylabel(info['ylabel'], fontsize=12)
         ax.set_title(f'{info["title"]} - 최근 30일 추이', fontsize=14, fontweight='bold', pad=20)
         ax.grid(True, alpha=0.3)
         ax.legend()
-        
+
         # Add source annotation
         ax.annotate('데이터 출처: yfinance', xy=(0.02, 0.02), xycoords='axes fraction',
                    fontsize=8, alpha=0.7)
-        
+
         # Adjust layout
         plt.tight_layout()
-        
+
         # Save chart
         chart_path = os.path.join(OUTPUT_DIR, info['filename'])
         plt.savefig(chart_path, dpi=150, bbox_inches='tight')
         plt.close()
-        
+
         chart_files[key] = info['filename']
         print(f"  ✓ Saved: {info['filename']}")
-    
+
     return chart_files
 
 def analyze_data(data):
-    """Analyze the fetched data and generate insights."""
+    """Analyze fetched data and generate insights."""
     analysis = {}
-    
+
     for key, item in data.items():
         if item is None:
             continue
-        
+
         df = item['df']
         info = item['info']
-        
-        # Get the close/adj close column
+
+        # Get close/adj close column
         if 'Close' in df.columns:
             prices = df['Close']
         else:
             prices = df['Adj Close']
-        
+
         # Calculate statistics
         start_price = prices.iloc[0]
         end_price = prices.iloc[-1]
         change = end_price - start_price
         change_pct = (change / start_price) * 100
-        
+
         # Find min and max
         max_price = prices.max()
         min_price = prices.min()
         max_idx = prices.idxmax()
         min_idx = prices.idxmin()
-        
-        # Get the date - it's the index itself
+
+        # Get date - it's the index itself
         max_date = pd.Timestamp(max_idx).strftime('%Y-%m-%d')
         min_date = pd.Timestamp(min_idx).strftime('%Y-%m-%d')
-        
+
         analysis[key] = {
             'title': info['title'],
             'start_price': round(float(start_price), 2),
@@ -154,42 +157,42 @@ def analyze_data(data):
             'min_price': round(float(min_price), 2),
             'min_date': min_date
         }
-    
+
     return analysis
 
 def generate_blog_post(chart_files, analysis):
-    """Generate the blog post with charts and analysis."""
-    
+    """Generate blog post with charts and analysis."""
+
     # Generate analysis text
     summary_lines = []
-    
+
     # Build individual analysis
     gold_analysis = analysis.get('gold', {})
     sp500_analysis = analysis.get('sp500', {})
     kospi_analysis = analysis.get('kospi', {})
     oil_analysis = analysis.get('oil', {})
     treasury_analysis = analysis.get('treasury', {})
-    
+
     # Determine trends
     gold_trend = "상승" if gold_analysis.get('change_pct', 0) > 0 else "하락"
     sp500_trend = "상승" if sp500_analysis.get('change_pct', 0) > 0 else "하락"
     kospi_trend = "상승" if kospi_analysis.get('change_pct', 0) > 0 else "하락"
     oil_trend = "상승" if oil_analysis.get('change_pct', 0) > 0 else "하락"
     treasury_trend = "상승" if treasury_analysis.get('change_pct', 0) > 0 else "하락"
-    
+
     blog_post = f"""---
 layout: post
-title: "2026년 2월 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드"
-date: 2026-02-25 06:00:00 +0900
+title: "{year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드"
+date: {date_str} 06:00:00 +0900
 categories: [economy, global-finance]
 tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금 가격, 원유, KOSPI, S&P 500]
-description: "2026년 2월 25일 글로벌 및 한국 경제 동향 분석과 주요 지수 트렌드"
-image: /assets/images/2026-02-25/gold_price_chart.png
+description: "{date_str} 글로벌 및 한국 경제 동향 분석과 주요 지수 트렌드"
+image: /assets/images/{date_str}/gold_price_chart.png
 ---
 
-## 2026년 2월 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드
+## {year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드
 
-최근 30일간의 주요 금융 지수 데이터를 분석하여 2026년 2월 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, 금 가격, S&P 500, KOSPI, 원유, 10년 국채 금리 등 주요 지표를 포괄적으로 다룹니다.
+최근 30일간의 주요 금융 지수 데이터를 분석하여 {year_month_str} 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, 금 가격, S&P 500, KOSPI, 원유, 10년 국채 금리 등 주요 지표를 포괄적으로 다룹니다.
 
 ---
 
@@ -197,7 +200,7 @@ image: /assets/images/2026-02-25/gold_price_chart.png
 
 ### 금 가격 동향
 
-![금 가격 차트](/assets/images/2026-02-25/gold_price_chart.png)
+![금 가격 차트](/assets/images/{date_str}/gold_price_chart.png)
 
 *그림 1: 최근 30일간 금 가격 추이 (데이터 출처: yfinance)*
 
@@ -212,7 +215,7 @@ image: /assets/images/2026-02-25/gold_price_chart.png
 
 ### S&P 500 지수
 
-![S&P 500 차트](/assets/images/2026-02-25/sp500_chart.png)
+![S&P 500 차트](/assets/images/{date_str}/sp500_chart.png)
 
 *그림 2: 최근 30일간 S&P 500 지수 추이 (데이터 출처: yfinance)*
 
@@ -227,7 +230,7 @@ image: /assets/images/2026-02-25/gold_price_chart.png
 
 ### KOSPI 지수
 
-![KOSPI 차트](/assets/images/2026-02-25/kospi_chart.png)
+![KOSPI 차트](/assets/images/{date_str}/kospi_chart.png)
 
 *그림 3: 최근 30일간 KOSPI 지수 추이 (데이터 출처: yfinance)*
 
@@ -242,7 +245,7 @@ KOSPI는 글로벌 시장 동향, 반도체 등 수출 주도 기업의 실적, 
 
 ### 원유 가격
 
-![원유 가격 차트](/assets/images/2026-02-25/oil_price_chart.png)
+![원유 가격 차트](/assets/images/{date_str}/oil_price_chart.png)
 
 *그림 4: 최근 30일간 원유 가격 추이 (데이터 출처: yfinance)*
 
@@ -257,7 +260,7 @@ WTI 원유 가격은 최근 30일간 **{oil_analysis.get('start_price', 'N/A')}$
 
 ### 10년 국채 금리
 
-![10년 국채 금리 차트](/assets/images/2026-02-25/treasury_rate_chart.png)
+![10년 국채 금리 차트](/assets/images/{date_str}/treasury_rate_chart.png)
 
 *그림 5: 최근 30일간 미국 10년 국채 금리 추이 (데이터 출처: yfinance)*
 
@@ -306,7 +309,7 @@ KOSPI는 다음 요인들에 민감하게 반응하고 있습니다:
 
 1. **통화 정책**: 인플레이션 억제와 경제 성장 간의 균형이 중요합니다.
 
-2. **거시 안정**: 금융 시장 안정을 위한 유연한 정책 대응이 필요합니다.
+2. **시장 안정**: 금융 시장 안정을 위한 유연한 정책 대응이 필요합니다.
 
 ---
 
@@ -323,7 +326,7 @@ KOSPI는 다음 요인들에 민감하게 반응하고 있습니다:
 
 ## 📌 결론
 
-2026년 2월 현재 글로벌 경제는 여전히 변동성이 높은 상황입니다. 주요 지수들의 움직임을 모니터링하면서 데이터 기반의 객관적 분석에 기초한 투자 및 경제 활동이 필요합니다.
+{year_month_str} 현재 글로벌 경제는 여전히 변동성이 높은 상황입니다. 주요 지수들의 움직임을 모니터링하면서 데이터 기반의 객관적 분석에 기초한 투자 및 경제 활동이 필요합니다.
 
 본 포스트에서 제공하는 데이터와 차트는 **yfinance**를 통해 수집된 실제 시장 데이터를 기반으로 하며, 지속적인 업데이트를 통해 최신 경제 동향을 파악하는 데 활용하실 수 있습니다.
 
@@ -331,52 +334,52 @@ KOSPI는 다음 요인들에 민감하게 반응하고 있습니다:
 
 *본 분석은 정보 제공 목적으로 작성되었으며, 투자 조언이 아닙니다. 투자 결정 시에는 반드시 전문가의 조언을 구하시기 바랍니다.*
 """
-    
-    # Write the blog post
+
+    # Write blog post
     with open(POST_PATH, 'w', encoding='utf-8') as f:
         f.write(blog_post)
-    
+
     print(f"\n✓ Blog post saved: {POST_PATH}")
-    
+
     return blog_post
 
 def main():
     """Main execution function."""
-    print("="*60)
+    print("=" * 60)
     print("Economic News Post Generator")
-    print("="*60)
-    
+    print("=" * 60)
+
     # Step 1: Create output directory
     print("\n[1/4] Creating output directory...")
     create_output_directory()
-    
+
     # Step 2: Fetch data
     print("\n[2/4] Fetching financial data...")
     data = fetch_data()
-    
+
     # Step 3: Create charts
     print("\n[3/4] Creating charts...")
     chart_files = create_chart(data)
-    
+
     # Step 4: Analyze data
     print("\n[4/4] Analyzing data...")
     analysis = analyze_data(data)
-    
+
     # Step 5: Generate blog post
     print("\n[5/5] Generating blog post...")
     blog_post = generate_blog_post(chart_files, analysis)
-    
-    print("\n" + "="*60)
+
+    print("\n" + "=" * 60)
     print("✓ All tasks completed successfully!")
-    print("="*60)
-    
+    print("=" * 60)
+
     # Print summary
     print("\n📋 Summary:")
     print(f"  - Charts created: {len(chart_files)}")
     print(f"  - Blog post: {POST_PATH}")
     print(f"  - Data source: yfinance")
     print(f"  - Instruments analyzed: {len([d for d in data.values() if d is not None])}")
-    
+
     return {
         'chart_files': chart_files,
         'analysis': analysis,
