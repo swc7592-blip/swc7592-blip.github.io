@@ -17,24 +17,34 @@ POST_PATH = f"/Users/shin/.openclaw/workspace/swc7592-blip.github.io/_posts/{dat
 
 # Instruments to fetch
 INSTRUMENTS = {
-    # Traditional assets
-    'gold': {'ticker': 'GC=F', 'title': '금 가격', 'category': '전통자산', 'unit': 'USD/oz'},
+    # Stock Indices
     'sp500': {'ticker': '^GSPC', 'title': 'S&P 500', 'category': '주식지수', 'unit': '지수'},
     'kospi': {'ticker': '^KS11', 'title': 'KOSPI', 'category': '주식지수', 'unit': '지수'},
-    'oil': {'ticker': 'CL=F', 'title': '원유 가격', 'category': '원자재', 'unit': 'USD/배럴'},
+
+    # Interest Rates
     'treasury': {'ticker': '^TNX', 'title': '10년 국채 금리', 'category': '금리', 'unit': '%'},
 
     # Cryptocurrencies
     'bitcoin': {'ticker': 'BTC-USD', 'title': '비트코인 (Bitcoin)', 'category': '크립토', 'unit': 'USD'},
     'ethereum': {'ticker': 'ETH-USD', 'title': '이더리움 (Ethereum)', 'category': '크립토', 'unit': 'USD'},
 
-    # Commodities
-    'silver': {'ticker': 'SI=F', 'title': '은 가격', 'category': '원자재', 'unit': 'USD/oz'},
-    'natural_gas': {'ticker': 'NG=F', 'title': '천연가스 (Natural Gas)', 'category': '원자재', 'unit': 'USD/MMBtu'},
-    'copper': {'ticker': 'HG=F', 'title': '구리 (Copper)', 'category': '원자재', 'unit': 'USD/pound'},
-    'aluminum': {'ticker': 'ALI=F', 'title': '알루미늄 (Aluminum)', 'category': '원자재', 'unit': 'USD/ton'},
+    # Metals (금속)
+    'gold': {'ticker': 'GC=F', 'title': '금 (Gold)', 'category': '금속', 'unit': 'USD/oz'},
+    'silver': {'ticker': 'SI=F', 'title': '은 (Silver)', 'category': '금속', 'unit': 'USD/oz'},
+    'copper': {'ticker': 'HG=F', 'title': '구리 (Copper)', 'category': '금속', 'unit': 'USD/pound'},
+    'aluminum': {'ticker': 'ALI=F', 'title': '알루미늄 (Aluminum)', 'category': '금속', 'unit': 'USD/ton'},
+    'platinum': {'ticker': 'PL=F', 'title': '백금 (Platinum)', 'category': '금속', 'unit': 'USD/oz'},
+
+    # Raw Materials (원료)
+    'wti': {'ticker': 'CL=F', 'title': 'WTI 원유 (WTI Crude)', 'category': '원료', 'unit': 'USD/배럴'},
+    'brent': {'ticker': 'BZ=F', 'title': 'Brent 원유 (Brent Crude)', 'category': '원료', 'unit': 'USD/배럴'},
+    'natural_gas': {'ticker': 'NG=F', 'title': '천연가스 (Natural Gas)', 'category': '원료', 'unit': 'USD/MMBtu'},
+    'gasoline': {'ticker': 'RB=F', 'title': '휘발유 (RBOB Gasoline)', 'category': '원료', 'unit': 'USD/갤런'},
+
+    # Agricultural Products (농산물)
     'wheat': {'ticker': 'ZW=F', 'title': '밀 (Wheat)', 'category': '농산물', 'unit': 'USD/bushel'},
     'corn': {'ticker': 'ZC=F', 'title': '옥수수 (Corn)', 'category': '농산물', 'unit': 'USD/bushel'},
+    'soybeans': {'ticker': 'ZS=F', 'title': '대두 (Soybeans)', 'category': '농산물', 'unit': 'USD/bushel'},
     'coffee': {'ticker': 'KC=F', 'title': '커피 (Coffee)', 'category': '농산물', 'unit': 'USD/pound'}
 }
 
@@ -118,11 +128,11 @@ def create_summary_table(analysis):
     """Create a summary table of all instruments."""
     # Group by category
     categories = {
-        '전통자산': [],
+        '금속': [],
+        '원료': [],
+        '농산물': [],
         '주식지수': [],
         '크립토': [],
-        '원자재': [],
-        '농산물': [],
         '금리': []
     }
 
@@ -171,13 +181,13 @@ layout: post
 title: "{year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드"
 date: {date_str} 06:00:00 +0900
 categories: [economy, global-finance]
-tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금 가격, 은 가격, 원유, 천연가스, 구리, 알루미늄, 밀, 옥수수, 커피, 비트코인, 이더리움, KOSPI, S&P 500]
-description: "{date_str} 글로벌 및 한국 경제 동향 분석과 주요 지수 트렌드"
+tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금, 은, 백금, 구리, 알루미늄, WTI 원유, Brent 원유, 천연가스, 휘발유, 밀, 옥수수, 대두, 커피, 요소, 비트코인, 이더리움, KOSPI, S&P 500]
+description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 금속, 원료, 농산물, 크립토 시장 트렌드"
 ---
 
 ## {year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드
 
-최근 30일간의 주요 금융 지수 데이터를 분석하여 {year_month_str} 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, 크립토(비트코인, 이더리움), 원자재(금, 은, 원유, 천연가스, 구리, 알루미늄), 농산물(밀, 옥수수, 커피), 주식 지수(S&P 500, KOSPI), 금리(10년 국채 금리) 등 주요 지표를 포괄적으로 다룹니다.
+최근 30일간의 주요 금융 지수 데이터를 분석하여 {year_month_str} 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, **금속**(금, 은, 백금, 구리, 알루미늄), **원료**(WTI 원유, Brent 원유, 천연가스, 휘발유), **농산물**(밀, 옥수수, 대두, 커피, 요소), **크립토**(비트코인, 이더리움), **주식 지수**(S&P 500, KOSPI), **금리**(10년 국채 금리) 등 주요 지표를 포괄적으로 다룹니다.
 
 ---
 
@@ -186,7 +196,7 @@ description: "{date_str} 글로벌 및 한국 경제 동향 분석과 주요 지
 """
 
     # Add tables for each category
-    for category in ['전통자산', '주식지수', '크립토', '원자재', '농산물', '금리']:
+    for category in ['금속', '원료', '농산물', '주식지수', '크립토', '금리']:
         if category in tables:
             blog_post += f"\n### {category}\n\n{tables[category]}\n\n"
 
