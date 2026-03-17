@@ -25,11 +25,25 @@ POST_PATH = f"/Users/shin/.openclaw/workspace/swc7592-blip.github.io/_posts/{dat
 
 # Instruments to fetch
 INSTRUMENTS = {
+    # Traditional assets
     'gold': {'ticker': 'GC=F', 'title': '금 가격', 'filename': 'gold_price_chart.png', 'ylabel': '가격 (USD/oz)'},
     'sp500': {'ticker': '^GSPC', 'title': 'S&P 500', 'filename': 'sp500_chart.png', 'ylabel': '지수'},
     'kospi': {'ticker': '^KS11', 'title': 'KOSPI', 'filename': 'kospi_chart.png', 'ylabel': '지수'},
     'oil': {'ticker': 'CL=F', 'title': '원유 가격', 'filename': 'oil_price_chart.png', 'ylabel': '가격 (USD/배럴)'},
-    'treasury': {'ticker': '^TNX', 'title': '10년 국채 금리', 'filename': 'treasury_rate_chart.png', 'ylabel': '금리 (%)'}
+    'treasury': {'ticker': '^TNX', 'title': '10년 국채 금리', 'filename': 'treasury_rate_chart.png', 'ylabel': '금리 (%)'},
+    'silver': {'ticker': 'SI=F', 'title': '은 가격', 'filename': 'silver_price_chart.png', 'ylabel': '가격 (USD/oz)'},
+
+    # Cryptocurrencies
+    'bitcoin': {'ticker': 'BTC-USD', 'title': '비트코인 (Bitcoin)', 'filename': 'bitcoin_price_chart.png', 'ylabel': '가격 (USD)'},
+    'ethereum': {'ticker': 'ETH-USD', 'title': '이더리움 (Ethereum)', 'filename': 'ethereum_price_chart.png', 'ylabel': '가격 (USD)'},
+
+    # Commodities
+    'natural_gas': {'ticker': 'NG=F', 'title': '천연가스 (Natural Gas)', 'filename': 'natural_gas_chart.png', 'ylabel': '가격 (USD/MMBtu)'},
+    'copper': {'ticker': 'HG=F', 'title': '구리 (Copper)', 'filename': 'copper_price_chart.png', 'ylabel': '가격 (USD/pound)'},
+    'aluminum': {'ticker': 'ALI=F', 'title': '알루미늄 (Aluminum)', 'filename': 'aluminum_price_chart.png', 'ylabel': '가격 (USD/metric ton)'},
+    'wheat': {'ticker': 'ZW=F', 'title': '밀 (Wheat)', 'filename': 'wheat_price_chart.png', 'ylabel': '가격 (USD/bushel)'},
+    'corn': {'ticker': 'ZC=F', 'title': '옥수수 (Corn)', 'filename': 'corn_price_chart.png', 'ylabel': '가격 (USD/bushel)'},
+    'coffee': {'ticker': 'KC=F', 'title': '커피 (Coffee)', 'filename': 'coffee_price_chart.png', 'ylabel': '가격 (USD/pound)'}
 }
 
 def create_output_directory():
@@ -168,16 +182,34 @@ def generate_blog_post(chart_files, analysis):
 
     # Build individual analysis
     gold_analysis = analysis.get('gold', {})
+    silver_analysis = analysis.get('silver', {})
     sp500_analysis = analysis.get('sp500', {})
     kospi_analysis = analysis.get('kospi', {})
     oil_analysis = analysis.get('oil', {})
+    natural_gas_analysis = analysis.get('natural_gas', {})
+    copper_analysis = analysis.get('copper', {})
+    aluminum_analysis = analysis.get('aluminum', {})
+    wheat_analysis = analysis.get('wheat', {})
+    corn_analysis = analysis.get('corn', {})
+    coffee_analysis = analysis.get('coffee', {})
+    bitcoin_analysis = analysis.get('bitcoin', {})
+    ethereum_analysis = analysis.get('ethereum', {})
     treasury_analysis = analysis.get('treasury', {})
 
     # Determine trends
     gold_trend = "상승" if gold_analysis.get('change_pct', 0) > 0 else "하락"
+    silver_trend = "상승" if silver_analysis.get('change_pct', 0) > 0 else "하락"
     sp500_trend = "상승" if sp500_analysis.get('change_pct', 0) > 0 else "하락"
     kospi_trend = "상승" if kospi_analysis.get('change_pct', 0) > 0 else "하락"
     oil_trend = "상승" if oil_analysis.get('change_pct', 0) > 0 else "하락"
+    natural_gas_trend = "상승" if natural_gas_analysis.get('change_pct', 0) > 0 else "하락"
+    copper_trend = "상승" if copper_analysis.get('change_pct', 0) > 0 else "하락"
+    aluminum_trend = "상승" if aluminum_analysis.get('change_pct', 0) > 0 else "하락"
+    wheat_trend = "상승" if wheat_analysis.get('change_pct', 0) > 0 else "하락"
+    corn_trend = "상승" if corn_analysis.get('change_pct', 0) > 0 else "하락"
+    coffee_trend = "상승" if coffee_analysis.get('change_pct', 0) > 0 else "하락"
+    bitcoin_trend = "상승" if bitcoin_analysis.get('change_pct', 0) > 0 else "하락"
+    ethereum_trend = "상승" if ethereum_analysis.get('change_pct', 0) > 0 else "하락"
     treasury_trend = "상승" if treasury_analysis.get('change_pct', 0) > 0 else "하락"
 
     blog_post = f"""---
@@ -185,14 +217,14 @@ layout: post
 title: "{year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드"
 date: {date_str} 06:00:00 +0900
 categories: [economy, global-finance]
-tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금 가격, 원유, KOSPI, S&P 500]
+tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금 가격, 은 가격, 원유, 천연가스, 구리, 알루미늄, 밀, 옥수수, 커피, 비트코인, 이더리움, KOSPI, S&P 500]
 description: "{date_str} 글로벌 및 한국 경제 동향 분석과 주요 지수 트렌드"
 image: /assets/images/{date_str}/gold_price_chart.png
 ---
 
 ## {year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드
 
-최근 30일간의 주요 금융 지수 데이터를 분석하여 {year_month_str} 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, 금 가격, S&P 500, KOSPI, 원유, 10년 국채 금리 등 주요 지표를 포괄적으로 다룹니다.
+최근 30일간의 주요 금융 지수 데이터를 분석하여 {year_month_str} 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, 크립토(비트코인, 이더리움), 원자재(금, 은, 원유, 천연가스, 구리, 알루미늄, 밀, 옥수수, 커피), 주식 지수(S&P 500, KOSPI), 금리(10년 국채 금리) 등 주요 지표를 포괄적으로 다룹니다.
 
 ---
 
@@ -210,6 +242,21 @@ image: /assets/images/{date_str}/gold_price_chart.png
 - 기간 중 최저가: **{gold_analysis.get('min_price', 'N/A')}$** ({gold_analysis.get('min_date', 'N/A')})
 
 금은 전통적으로 인플레이션 헤지 수단으로 활용되며, 최근 경제 불확실성이 높아짐에 따라 안전자산으로서의 선호도가 변화하고 있습니다.
+
+---
+
+### 은 가격 동향
+
+![은 가격 차트](/assets/images/{date_str}/silver_price_chart.png)
+
+*그림 2: 최근 30일간 은 가격 추이 (데이터 출처: yfinance)*
+
+은 가격은 최근 30일간 **{silver_analysis.get('start_price', 'N/A')}$**에서 **{silver_analysis.get('end_price', 'N/A')}$**로 **{silver_analysis.get('change_pct', 0):.2f}%** {silver_trend}했습니다.
+
+- 기간 중 최고가: **{silver_analysis.get('max_price', 'N/A')}$** ({silver_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{silver_analysis.get('min_price', 'N/A')}$** ({silver_analysis.get('min_date', 'N/A')})
+
+은은 산업용 재료와 투자용 자산으로서의 이중 성격을 가지고 있어, 산업 활동과 안전자산 선호도 양쪽의 영향을 받습니다.
 
 ---
 
@@ -243,6 +290,36 @@ KOSPI는 글로벌 시장 동향, 반도체 등 수출 주도 기업의 실적, 
 
 ---
 
+### 크립토 마켓: 비트코인
+
+![비트코인 차트](/assets/images/{date_str}/bitcoin_price_chart.png)
+
+*그림 5: 최근 30일간 비트코인 가격 추이 (데이터 출처: yfinance)*
+
+비트코인 가격은 최근 30일간 **{bitcoin_analysis.get('start_price', 'N/A')}$**에서 **{bitcoin_analysis.get('end_price', 'N/A')}$**로 **{bitcoin_analysis.get('change_pct', 0):.2f}%** {bitcoin_trend}했습니다.
+
+- 기간 중 최고가: **{bitcoin_analysis.get('max_price', 'N/A')}$** ({bitcoin_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{bitcoin_analysis.get('min_price', 'N/A')}$** ({bitcoin_analysis.get('min_date', 'N/A')}
+
+비트코인은 디지털 자산의 대표로서, 전통적인 금융 시장과 상관관계가 높아지면서 기관 투자자들의 관심이 지속되고 있습니다.
+
+---
+
+### 크립토 마켓: 이더리움
+
+![이더리움 차트](/assets/images/{date_str}/ethereum_price_chart.png)
+
+*그림 6: 최근 30일간 이더리움 가격 추이 (데이터 출처: yfinance)*
+
+이더리움 가격은 최근 30일간 **{ethereum_analysis.get('start_price', 'N/A')}$**에서 **{ethereum_analysis.get('end_price', 'N/A')}$**로 **{ethereum_analysis.get('change_pct', 0):.2f}%** {ethereum_trend}했습니다.
+
+- 기간 중 최고가: **{ethereum_analysis.get('max_price', 'N/A')}$** ({ethereum_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{ethereum_analysis.get('min_price', 'N/A')}$** ({ethereum_analysis.get('min_date', 'N/A')})
+
+이더리움은 스마트 컨트랙트와 탈중앙화 애플리케이션 플랫폼으로서, 블록체인 생태계의 성장과 밀접하게 연결되어 있습니다.
+
+---
+
 ### 원유 가격
 
 ![원유 가격 차트](/assets/images/{date_str}/oil_price_chart.png)
@@ -255,6 +332,21 @@ WTI 원유 가격은 최근 30일간 **{oil_analysis.get('start_price', 'N/A')}$
 - 기간 중 최저가: **{oil_analysis.get('min_price', 'N/A')}$** ({oil_analysis.get('min_date', 'N/A')})
 
 원유 가격은 공급망 문제, OPEC+ 생산 결정, 글로벌 경제 성장 전망 등 복합적인 요인에 의해 결정됩니다.
+
+---
+
+### 천연가스 가격
+
+![천연가스 차트](/assets/images/{date_str}/natural_gas_chart.png)
+
+*그림 8: 최근 30일간 천연가스 가격 추이 (데이터 출처: yfinance)*
+
+천연가스 가격은 최근 30일간 **{natural_gas_analysis.get('start_price', 'N/A')}$**에서 **{natural_gas_analysis.get('end_price', 'N/A')}$**로 **{natural_gas_analysis.get('change_pct', 0):.2f}%** {natural_gas_trend}했습니다.
+
+- 기간 중 최고가: **{natural_gas_analysis.get('max_price', 'N/A')}$** ({natural_gas_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{natural_gas_analysis.get('min_price', 'N/A')}$** ({natural_gas_analysis.get('min_date', 'N/A')})
+
+천연가스는 계절적 수요와 공급망 이슈에 민감하게 반응하며, 청정 에너지 전환 과정에서도 중요한 역할을 하고 있습니다.
 
 ---
 
@@ -273,6 +365,81 @@ WTI 원유 가격은 최근 30일간 **{oil_analysis.get('start_price', 'N/A')}$
 
 ---
 
+### 구리 가격
+
+![구리 차트](/assets/images/{date_str}/copper_price_chart.png)
+
+*그림 10: 최근 30일간 구리 가격 추이 (데이터 출처: yfinance)*
+
+구리 가격은 최근 30일간 **{copper_analysis.get('start_price', 'N/A')}$**에서 **{copper_analysis.get('end_price', 'N/A')}$**로 **{copper_analysis.get('change_pct', 0):.2f}%** {copper_trend}했습니다.
+
+- 기간 중 최고가: **{copper_analysis.get('max_price', 'N/A')}$** ({copper_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{copper_analysis.get('min_price', 'N/A')}$** ({copper_analysis.get('min_date', 'N/A')})
+
+구리는 경제 전반의 건전성을 나타내는 '드. 구리 가격은 글로벌 경제 성장과 인프라 투자 활동을 반영합니다.
+
+---
+
+### 알루미늄 가격
+
+![알루미늄 차트](/assets/images/{date_str}/aluminum_price_chart.png)
+
+*그림 11: 최근 30일간 알루미늄 가격 추이 (데이터 출처: yfinance)*
+
+알루미늄 가격은 최근 30일간 **{aluminum_analysis.get('start_price', 'N/A')}$**에서 **{aluminum_analysis.get('end_price', 'N/A')}$**로 **{aluminum_analysis.get('change_pct', 0):.2f}%** {aluminum_trend}했습니다.
+
+- 기간 중 최고가: **{aluminum_analysis.get('max_price', 'N/A')}$** ({aluminum_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{aluminum_analysis.get('min_price', 'N/A')}$** ({aluminum_analysis.get('min_date', 'N/A')})
+
+알루미늄은 경량 금속으로 자동차, 항공우주, 건설 등 다양한 산업에서 널리 사용됩니다.
+
+---
+
+### 밀 가격
+
+![밀 차트](/assets/images/{date_str}/wheat_price_chart.png)
+
+*그림 12: 최근 30일간 밀 가격 추이 (데이터 출처: yfinance)*
+
+밀 가격은 최근 30일간 **{wheat_analysis.get('start_price', 'N/A')}$**에서 **{wheat_analysis.get('end_price', 'N/A')}$**로 **{wheat_analysis.get('change_pct', 0):.2f}%** {wheat_trend}했습니다.
+
+- 기간 중 최고가: **{wheat_analysis.get('max_price', 'N/A')}$** ({wheat_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{wheat_analysis.get('min_price', 'N/A')}$** ({wheat_analysis.get('min_date', 'N/A')}
+
+밀은 세계 식량 안보와 밀접한 관련이 있으며, 기후 조건과 수출국 정책에 영향을 받습니다.
+
+---
+
+### 옥수수 가격
+
+![옥수수 차트](/assets/images/{date_str}/corn_price_chart.png)
+
+*그림 13: 최근 30일간 옥수수 가격 추이 (데이터 출처: yfinance)*
+
+옥수수 가격은 최근 30일간 **{corn_analysis.get('start_price', 'N/A')}$**에서 **{corn_analysis.get('end_price', 'N/A')}$**로 **{corn_analysis.get('change_pct', 0):.2f}%** {corn_trend}했습니다.
+
+- 기간 중 최고가: **{corn_analysis.get('max_price', 'N/A')}$** ({corn_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{corn_analysis.get('min_price', 'N/A')}$** ({corn_analysis.get('min_date', 'N/A')}
+
+옥수수는 식량과 바이오 연료 양쪽에 사용되며, 에너지 가격과 기후 조건에 영향을 받습니다.
+
+---
+
+### 커피 가격
+
+![커피 차트](/assets/images/{date_str}/coffee_price_chart.png)
+
+*그림 14: 최근 30일간 커피 가격 추이 (데이터 출처: yfinance)*
+
+커피 가격은 최근 30일간 **{coffee_analysis.get('start_price', 'N/A')}$**에서 **{coffee_analysis.get('end_price', 'N/A')}$**로 **{coffee_analysis.get('change_pct', 0):.2f}%** {coffee_trend}했습니다.
+
+- 기간 중 최고가: **{coffee_analysis.get('max_price', 'N/A')}$** ({coffee_analysis.get('max_date', 'N/A')})
+- 기간 중 최저가: **{coffee_analysis.get('min_price', 'N/A')}$** ({coffee_analysis.get('min_date', 'N/A')}
+
+커피 가격은 주요 생산국의 기후 조건, 생산량 변화, 그리고 글로벌 수요에 민감하게 반응합니다.
+
+---
+
 ## 🌍 글로벌 vs 지역 시장 비교
 
 ### 경제 트렌드 요약
@@ -281,9 +448,13 @@ WTI 원유 가격은 최근 30일간 **{oil_analysis.get('start_price', 'N/A')}$
 
 1. **주식시장**: 미국 S&P 500과 한국 KOSPI 모두 {sp500_trend if sp500_analysis.get('change_pct', 0) * kospi_analysis.get('change_pct', 0) > 0 else "서로 다른 방향성을 보이며"} 움직였습니다.
 
-2. **원자재**: 금과 원유 가격의 변동성은 시장의 불확실성과 전망을 반영하고 있습니다.
+2. **크립토 마켓**: 비트코인과 이더리움은 각각 **{bitcoin_trend} / {ethereum_trend}**했으며, 전통 자산과의 상관관계가 높아지고 있습니다.
 
-3. **금리**: 장기 국채 금리의 움직임은 연준의 통화 정책 기대와 경제 성장 전망을 나타냅니다.
+3. **원자재**: 금({gold_trend})과 은({silver_trend}), 원유({oil_trend}), 그리고 구리({copper_trend}) 등 산업용 금속의 가격 변동은 글로벌 경제 성장과 불확실성을 반영하고 있습니다.
+
+4. **농산물**: 밀({wheat_trend}), 옥수수({corn_trend}), 커피({coffee_trend}) 등은 기후 조건과 글로벌 수급에 민감하게 반응하고 있습니다.
+
+5. **금리**: 장기 국채 금리의 움직임은 연준의 통화 정책 기대와 경제 성장 전망을 나타냅니다.
 
 ### 한국 시장 특징
 
@@ -299,11 +470,13 @@ KOSPI는 다음 요인들에 민감하게 반응하고 있습니다:
 
 ### 투자자 관점
 
-1. **자산 배분**: 금과 주식, 채권 간의 상관관계를 고려한 균형 잡힌 포트폴리오가 필요합니다.
+1. **자산 배분**: 전통 자산(주식, 채권, 금, 은)과 크립토 자산(비트코인, 이더리움) 간의 상관관계를 고려한 균형 잡힌 포트폴리오가 필요합니다.
 
-2. **리스크 관리**: 경제 불확실성이 높을 때는 안전자산 비중 확대를 고려해야 합니다.
+2. **원자재 다각화**: 에너지(원유, 천연가스), 금속(금, 은, 구리, 알루미늄), 농산물(밀, 옥수수, 커피)에 대한 분석을 통해 인플레이션 헷지를 고려해야 합니다.
 
-3. **장기 관점**: 단기 변동성에 일희일비하지 않고 기본적인 경제 펀더멘털을 중심으로 투자 결정을 내려야 합니다.
+3. **리스크 관리**: 경제 불확실성이 높을 때는 안전자산(금, 은, 국채) 비중 확대를 고려해야 합니다.
+
+4. **장기 관점**: 단기 변동성에 일희일비하지 않고 기본적인 경제 펀더멘털을 중심으로 투자 결정을 내려야 합니다.
 
 ### 정책 관점
 
