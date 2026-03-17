@@ -1,58 +1,45 @@
 #!/usr/bin/env python3
 """
 Economic News Post Generator
-Fetches financial data using yfinance, creates charts, and generates a blog post.
+Fetches financial data using yfinance, creates summary tables, and generates a blog post.
 """
 
 import yfinance as yf
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import pandas as pd
 from datetime import datetime, timedelta
 import os
-import json
-
-# Set up Korean font for matplotlib
-plt.rcParams['font.sans-serif'] = ['AppleGothic', 'Malgun Gothic', 'DejaVu Sans']
-plt.rcParams['axes.unicode_minus'] = False
 
 # Dynamic date configuration
 today = datetime.now()
 date_str = today.strftime('%Y-%m-%d')
 year_month_str = today.strftime('%Y년 %m월')
-OUTPUT_DIR = f"/Users/shin/.openclaw/workspace/swc7592-blip.github.io/assets/images/{date_str}"
 POST_PATH = f"/Users/shin/.openclaw/workspace/swc7592-blip.github.io/_posts/{date_str}-economic-trends-analysis.md"
 
 # Instruments to fetch
 INSTRUMENTS = {
     # Traditional assets
-    'gold': {'ticker': 'GC=F', 'title': '금 가격', 'filename': 'gold_price_chart.png', 'ylabel': '가격 (USD/oz)'},
-    'sp500': {'ticker': '^GSPC', 'title': 'S&P 500', 'filename': 'sp500_chart.png', 'ylabel': '지수'},
-    'kospi': {'ticker': '^KS11', 'title': 'KOSPI', 'filename': 'kospi_chart.png', 'ylabel': '지수'},
-    'oil': {'ticker': 'CL=F', 'title': '원유 가격', 'filename': 'oil_price_chart.png', 'ylabel': '가격 (USD/배럴)'},
-    'treasury': {'ticker': '^TNX', 'title': '10년 국채 금리', 'filename': 'treasury_rate_chart.png', 'ylabel': '금리 (%)'},
-    'silver': {'ticker': 'SI=F', 'title': '은 가격', 'filename': 'silver_price_chart.png', 'ylabel': '가격 (USD/oz)'},
+    'gold': {'ticker': 'GC=F', 'title': '금 가격', 'category': '전통자산', 'unit': 'USD/oz'},
+    'sp500': {'ticker': '^GSPC', 'title': 'S&P 500', 'category': '주식지수', 'unit': '지수'},
+    'kospi': {'ticker': '^KS11', 'title': 'KOSPI', 'category': '주식지수', 'unit': '지수'},
+    'oil': {'ticker': 'CL=F', 'title': '원유 가격', 'category': '원자재', 'unit': 'USD/배럴'},
+    'treasury': {'ticker': '^TNX', 'title': '10년 국채 금리', 'category': '금리', 'unit': '%'},
 
     # Cryptocurrencies
-    'bitcoin': {'ticker': 'BTC-USD', 'title': '비트코인 (Bitcoin)', 'filename': 'bitcoin_price_chart.png', 'ylabel': '가격 (USD)'},
-    'ethereum': {'ticker': 'ETH-USD', 'title': '이더리움 (Ethereum)', 'filename': 'ethereum_price_chart.png', 'ylabel': '가격 (USD)'},
+    'bitcoin': {'ticker': 'BTC-USD', 'title': '비트코인 (Bitcoin)', 'category': '크립토', 'unit': 'USD'},
+    'ethereum': {'ticker': 'ETH-USD', 'title': '이더리움 (Ethereum)', 'category': '크립토', 'unit': 'USD'},
 
     # Commodities
-    'natural_gas': {'ticker': 'NG=F', 'title': '천연가스 (Natural Gas)', 'filename': 'natural_gas_chart.png', 'ylabel': '가격 (USD/MMBtu)'},
-    'copper': {'ticker': 'HG=F', 'title': '구리 (Copper)', 'filename': 'copper_price_chart.png', 'ylabel': '가격 (USD/pound)'},
-    'aluminum': {'ticker': 'ALI=F', 'title': '알루미늄 (Aluminum)', 'filename': 'aluminum_price_chart.png', 'ylabel': '가격 (USD/metric ton)'},
-    'wheat': {'ticker': 'ZW=F', 'title': '밀 (Wheat)', 'filename': 'wheat_price_chart.png', 'ylabel': '가격 (USD/bushel)'},
-    'corn': {'ticker': 'ZC=F', 'title': '옥수수 (Corn)', 'filename': 'corn_price_chart.png', 'ylabel': '가격 (USD/bushel)'},
-    'coffee': {'ticker': 'KC=F', 'title': '커피 (Coffee)', 'filename': 'coffee_price_chart.png', 'ylabel': '가격 (USD/pound)'}
+    'silver': {'ticker': 'SI=F', 'title': '은 가격', 'category': '원자재', 'unit': 'USD/oz'},
+    'natural_gas': {'ticker': 'NG=F', 'title': '천연가스 (Natural Gas)', 'category': '원자재', 'unit': 'USD/MMBtu'},
+    'copper': {'ticker': 'HG=F', 'title': '구리 (Copper)', 'category': '원자재', 'unit': 'USD/pound'},
+    'aluminum': {'ticker': 'ALI=F', 'title': '알루미늄 (Aluminum)', 'category': '원자재', 'unit': 'USD/ton'},
+    'wheat': {'ticker': 'ZW=F', 'title': '밀 (Wheat)', 'category': '농산물', 'unit': 'USD/bushel'},
+    'corn': {'ticker': 'ZC=F', 'title': '옥수수 (Corn)', 'category': '농산물', 'unit': 'USD/bushel'},
+    'coffee': {'ticker': 'KC=F', 'title': '커피 (Coffee)', 'category': '농산물', 'unit': 'USD/pound'}
 }
 
-def create_output_directory():
-    """Create output directory if it doesn't exist."""
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    print(f"Output directory: {OUTPUT_DIR}")
-
 def fetch_data():
-    """Fetch data for all instruments over the last 30 days."""
+    """Fetch data for all instruments over last 30 days."""
     end_date = datetime.now()
     start_date = end_date - timedelta(days=60)  # Get more data to ensure we have 30 trading days
 
@@ -77,55 +64,6 @@ def fetch_data():
             data[key] = None
 
     return data
-
-def create_chart(data):
-    """Create and save charts for each instrument."""
-    chart_files = {}
-
-    for key, item in data.items():
-        if item is None:
-            continue
-
-        df = item['df']
-        info = item['info']
-
-        # Create figure
-        fig, ax = plt.subplots(figsize=(12, 6))
-
-        # Plot data
-        if 'Close' in df.columns:
-            ax.plot(df.index, df['Close'], linewidth=2, color='#2563eb', label='종가')
-        elif 'Adj Close' in df.columns:
-            ax.plot(df.index, df['Adj Close'], linewidth=2, color='#2563eb', label='수정 종가')
-
-        # Format x-axis
-        ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-        ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
-        plt.xticks(rotation=45)
-
-        # Labels and title
-        ax.set_xlabel('날짜', fontsize=12)
-        ax.set_ylabel(info['ylabel'], fontsize=12)
-        ax.set_title(f'{info["title"]} - 최근 30일 추이', fontsize=14, fontweight='bold', pad=20)
-        ax.grid(True, alpha=0.3)
-        ax.legend()
-
-        # Add source annotation
-        ax.annotate('데이터 출처: yfinance', xy=(0.02, 0.02), xycoords='axes fraction',
-                   fontsize=8, alpha=0.7)
-
-        # Adjust layout
-        plt.tight_layout()
-
-        # Save chart
-        chart_path = os.path.join(OUTPUT_DIR, info['filename'])
-        plt.savefig(chart_path, dpi=150, bbox_inches='tight')
-        plt.close()
-
-        chart_files[key] = info['filename']
-        print(f"  ✓ Saved: {info['filename']}")
-
-    return chart_files
 
 def analyze_data(data):
     """Analyze fetched data and generate insights."""
@@ -162,6 +100,8 @@ def analyze_data(data):
 
         analysis[key] = {
             'title': info['title'],
+            'category': info['category'],
+            'unit': info['unit'],
             'start_price': round(float(start_price), 2),
             'end_price': round(float(end_price), 2),
             'change': round(float(change), 2),
@@ -174,43 +114,57 @@ def analyze_data(data):
 
     return analysis
 
-def generate_blog_post(chart_files, analysis):
-    """Generate blog post with charts and analysis."""
+def create_summary_table(analysis):
+    """Create a summary table of all instruments."""
+    # Group by category
+    categories = {
+        '전통자산': [],
+        '주식지수': [],
+        '크립토': [],
+        '원자재': [],
+        '농산물': [],
+        '금리': []
+    }
 
-    # Generate analysis text
-    summary_lines = []
+    for key, item in analysis.items():
+        category = item['category']
+        if category in categories:
+            categories[category].append(item)
 
-    # Build individual analysis
-    gold_analysis = analysis.get('gold', {})
-    silver_analysis = analysis.get('silver', {})
-    sp500_analysis = analysis.get('sp500', {})
-    kospi_analysis = analysis.get('kospi', {})
-    oil_analysis = analysis.get('oil', {})
-    natural_gas_analysis = analysis.get('natural_gas', {})
-    copper_analysis = analysis.get('copper', {})
-    aluminum_analysis = analysis.get('aluminum', {})
-    wheat_analysis = analysis.get('wheat', {})
-    corn_analysis = analysis.get('corn', {})
-    coffee_analysis = analysis.get('coffee', {})
-    bitcoin_analysis = analysis.get('bitcoin', {})
-    ethereum_analysis = analysis.get('ethereum', {})
-    treasury_analysis = analysis.get('treasury', {})
+    # Build tables for each category
+    tables = {}
+    for category, items in categories.items():
+        if not items:
+            continue
 
-    # Determine trends
-    gold_trend = "상승" if gold_analysis.get('change_pct', 0) > 0 else "하락"
-    silver_trend = "상승" if silver_analysis.get('change_pct', 0) > 0 else "하락"
-    sp500_trend = "상승" if sp500_analysis.get('change_pct', 0) > 0 else "하락"
-    kospi_trend = "상승" if kospi_analysis.get('change_pct', 0) > 0 else "하락"
-    oil_trend = "상승" if oil_analysis.get('change_pct', 0) > 0 else "하락"
-    natural_gas_trend = "상승" if natural_gas_analysis.get('change_pct', 0) > 0 else "하락"
-    copper_trend = "상승" if copper_analysis.get('change_pct', 0) > 0 else "하락"
-    aluminum_trend = "상승" if aluminum_analysis.get('change_pct', 0) > 0 else "하락"
-    wheat_trend = "상승" if wheat_analysis.get('change_pct', 0) > 0 else "하락"
-    corn_trend = "상승" if corn_analysis.get('change_pct', 0) > 0 else "하락"
-    coffee_trend = "상승" if coffee_analysis.get('change_pct', 0) > 0 else "하락"
-    bitcoin_trend = "상승" if bitcoin_analysis.get('change_pct', 0) > 0 else "하락"
-    ethereum_trend = "상승" if ethereum_analysis.get('change_pct', 0) > 0 else "하락"
-    treasury_trend = "상승" if treasury_analysis.get('change_pct', 0) > 0 else "하락"
+        # Sort by title
+        items.sort(key=lambda x: x['title'])
+
+        # Build markdown table
+        table_lines = []
+        table_lines.append(f"| 항목 | 현재 가격 | 시작 가격 | 변동 | 변동률 | 기간 중 최고 | 최고 날짜 | 기간 중 최저 | 최저 날짜 |")
+        table_lines.append("|------|----------|----------|------|--------|------------|----------|------------|----------|")
+
+        for item in items:
+            trend = "📈" if item['change_pct'] > 0 else "📉"
+            table_lines.append(
+                f"| {item['title']} | "
+                f"{item['end_price']} {item['unit']} | "
+                f"{item['start_price']} {item['unit']} | "
+                f"{item['change']:+.2f} {item['unit']} | "
+                f"{trend} {item['change_pct']:+.2f}% | "
+                f"{item['max_price']} {item['unit']} | "
+                f"{item['max_date']} | "
+                f"{item['min_price']} {item['unit']} | "
+                f"{item['min_date']} |"
+            )
+
+        tables[category] = '\n'.join(table_lines)
+
+    return tables
+
+def generate_blog_post(tables, analysis):
+    """Generate blog post with tables and analysis."""
 
     blog_post = f"""---
 layout: post
@@ -219,254 +173,54 @@ date: {date_str} 06:00:00 +0900
 categories: [economy, global-finance]
 tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금 가격, 은 가격, 원유, 천연가스, 구리, 알루미늄, 밀, 옥수수, 커피, 비트코인, 이더리움, KOSPI, S&P 500]
 description: "{date_str} 글로벌 및 한국 경제 동향 분석과 주요 지수 트렌드"
-image: /assets/images/{date_str}/gold_price_chart.png
 ---
 
 ## {year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드
 
-최근 30일간의 주요 금융 지수 데이터를 분석하여 {year_month_str} 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, 크립토(비트코인, 이더리움), 원자재(금, 은, 원유, 천연가스, 구리, 알루미늄, 밀, 옥수수, 커피), 주식 지수(S&P 500, KOSPI), 금리(10년 국채 금리) 등 주요 지표를 포괄적으로 다룹니다.
+최근 30일간의 주요 금융 지수 데이터를 분석하여 {year_month_str} 현재 글로벌 및 한국 경제의 동향을 정리해 드립니다. 본 분석은 **yfinance** 데이터를 기반으로 하며, 크립토(비트코인, 이더리움), 원자재(금, 은, 원유, 천연가스, 구리, 알루미늄), 농산물(밀, 옥수수, 커피), 주식 지수(S&P 500, KOSPI), 금리(10년 국채 금리) 등 주요 지표를 포괄적으로 다룹니다.
 
 ---
 
-## 📊 주요 지수 개요
+## 📊 주요 지수 요약표
 
-### 금 가격 동향
+"""
 
-![금 가격 차트](/assets/images/{date_str}/gold_price_chart.png)
+    # Add tables for each category
+    for category in ['전통자산', '주식지수', '크립토', '원자재', '농산물', '금리']:
+        if category in tables:
+            blog_post += f"\n### {category}\n\n{tables[category]}\n\n"
 
-*그림 1: 최근 30일간 금 가격 추이 (데이터 출처: yfinance)*
+    # Add summary and analysis
+    blog_post += """---
 
-금 가격은 최근 30일간 **{gold_analysis.get('start_price', 'N/A')}$**에서 **{gold_analysis.get('end_price', 'N/A')}$**로 **{gold_analysis.get('change_pct', 0):.2f}%** {gold_trend}했습니다.
+## 🌍 경제 트렌드 요약
 
-- 기간 중 최고가: **{gold_analysis.get('max_price', 'N/A')}$** ({gold_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{gold_analysis.get('min_price', 'N/A')}$** ({gold_analysis.get('min_date', 'N/A')})
+최근 30일간의 데이터를 바탕으로 주요 경제 동향을 요약합니다:
 
-금은 전통적으로 인플레이션 헤지 수단으로 활용되며, 최근 경제 불확실성이 높아짐에 따라 안전자산으로서의 선호도가 변화하고 있습니다.
+### 📈 상승한 항목
 
+"""
+
+    # List trending up items
+    trending_up = [item for item in analysis.values() if item['change_pct'] > 0]
+    trending_up.sort(key=lambda x: x['change_pct'], reverse=True)
+
+    for item in trending_up[:5]:
+        blog_post += f"- **{item['title']}**: +{item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
+
+    blog_post += "\n### 📉 하락한 항목\n\n"
+
+    # List trending down items
+    trending_down = [item for item in analysis.values() if item['change_pct'] < 0]
+    trending_down.sort(key=lambda x: x['change_pct'])
+
+    for item in trending_down[:5]:
+        blog_post += f"- **{item['title']}**: {item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
+
+    blog_post += """
 ---
 
-### 은 가격 동향
-
-![은 가격 차트](/assets/images/{date_str}/silver_price_chart.png)
-
-*그림 2: 최근 30일간 은 가격 추이 (데이터 출처: yfinance)*
-
-은 가격은 최근 30일간 **{silver_analysis.get('start_price', 'N/A')}$**에서 **{silver_analysis.get('end_price', 'N/A')}$**로 **{silver_analysis.get('change_pct', 0):.2f}%** {silver_trend}했습니다.
-
-- 기간 중 최고가: **{silver_analysis.get('max_price', 'N/A')}$** ({silver_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{silver_analysis.get('min_price', 'N/A')}$** ({silver_analysis.get('min_date', 'N/A')})
-
-은은 산업용 재료와 투자용 자산으로서의 이중 성격을 가지고 있어, 산업 활동과 안전자산 선호도 양쪽의 영향을 받습니다.
-
----
-
-### S&P 500 지수
-
-![S&P 500 차트](/assets/images/{date_str}/sp500_chart.png)
-
-*그림 2: 최근 30일간 S&P 500 지수 추이 (데이터 출처: yfinance)*
-
-미국 주식시장을 대표하는 S&P 500 지수는 최근 30일간 **{sp500_analysis.get('start_price', 'N/A')}**에서 **{sp500_analysis.get('end_price', 'N/A')}**로 **{sp500_analysis.get('change_pct', 0):.2f}%** {sp500_trend}했습니다.
-
-- 기간 중 최고치: **{sp500_analysis.get('max_price', 'N/A')}** ({sp500_analysis.get('max_date', 'N/A')})
-- 기간 중 최저치: **{sp500_analysis.get('min_price', 'N/A')}** ({sp500_analysis.get('min_date', 'N/A')})
-
-미국 경제의 성장세와 기업 실적, 그리고 연준의 금리 정책이 주가에 큰 영향을 미치고 있습니다.
-
----
-
-### KOSPI 지수
-
-![KOSPI 차트](/assets/images/{date_str}/kospi_chart.png)
-
-*그림 3: 최근 30일간 KOSPI 지수 추이 (데이터 출처: yfinance)*
-
-한국 주식시장을 대표하는 KOSPI 지수는 최근 30일간 **{kospi_analysis.get('start_price', 'N/A')}**에서 **{kospi_analysis.get('end_price', 'N/A')}**로 **{kospi_analysis.get('change_pct', 0):.2f}%** {kospi_trend}했습니다.
-
-- 기간 중 최고치: **{kospi_analysis.get('max_price', 'N/A')}** ({kospi_analysis.get('max_date', 'N/A')})
-- 기간 중 최저치: **{kospi_analysis.get('min_price', 'N/A')}** ({kospi_analysis.get('min_date', 'N/A')})
-
-KOSPI는 글로벌 시장 동향, 반도체 등 수출 주도 기업의 실적, 그리고 원/달러 환율 등 다양한 요인에 영향을 받습니다.
-
----
-
-### 크립토 마켓: 비트코인
-
-![비트코인 차트](/assets/images/{date_str}/bitcoin_price_chart.png)
-
-*그림 5: 최근 30일간 비트코인 가격 추이 (데이터 출처: yfinance)*
-
-비트코인 가격은 최근 30일간 **{bitcoin_analysis.get('start_price', 'N/A')}$**에서 **{bitcoin_analysis.get('end_price', 'N/A')}$**로 **{bitcoin_analysis.get('change_pct', 0):.2f}%** {bitcoin_trend}했습니다.
-
-- 기간 중 최고가: **{bitcoin_analysis.get('max_price', 'N/A')}$** ({bitcoin_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{bitcoin_analysis.get('min_price', 'N/A')}$** ({bitcoin_analysis.get('min_date', 'N/A')}
-
-비트코인은 디지털 자산의 대표로서, 전통적인 금융 시장과 상관관계가 높아지면서 기관 투자자들의 관심이 지속되고 있습니다.
-
----
-
-### 크립토 마켓: 이더리움
-
-![이더리움 차트](/assets/images/{date_str}/ethereum_price_chart.png)
-
-*그림 6: 최근 30일간 이더리움 가격 추이 (데이터 출처: yfinance)*
-
-이더리움 가격은 최근 30일간 **{ethereum_analysis.get('start_price', 'N/A')}$**에서 **{ethereum_analysis.get('end_price', 'N/A')}$**로 **{ethereum_analysis.get('change_pct', 0):.2f}%** {ethereum_trend}했습니다.
-
-- 기간 중 최고가: **{ethereum_analysis.get('max_price', 'N/A')}$** ({ethereum_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{ethereum_analysis.get('min_price', 'N/A')}$** ({ethereum_analysis.get('min_date', 'N/A')})
-
-이더리움은 스마트 컨트랙트와 탈중앙화 애플리케이션 플랫폼으로서, 블록체인 생태계의 성장과 밀접하게 연결되어 있습니다.
-
----
-
-### 원유 가격
-
-![원유 가격 차트](/assets/images/{date_str}/oil_price_chart.png)
-
-*그림 4: 최근 30일간 원유 가격 추이 (데이터 출처: yfinance)*
-
-WTI 원유 가격은 최근 30일간 **{oil_analysis.get('start_price', 'N/A')}$**에서 **{oil_analysis.get('end_price', 'N/A')}$**로 **{oil_analysis.get('change_pct', 0):.2f}%** {oil_trend}했습니다.
-
-- 기간 중 최고가: **{oil_analysis.get('max_price', 'N/A')}$** ({oil_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{oil_analysis.get('min_price', 'N/A')}$** ({oil_analysis.get('min_date', 'N/A')})
-
-원유 가격은 공급망 문제, OPEC+ 생산 결정, 글로벌 경제 성장 전망 등 복합적인 요인에 의해 결정됩니다.
-
----
-
-### 천연가스 가격
-
-![천연가스 차트](/assets/images/{date_str}/natural_gas_chart.png)
-
-*그림 8: 최근 30일간 천연가스 가격 추이 (데이터 출처: yfinance)*
-
-천연가스 가격은 최근 30일간 **{natural_gas_analysis.get('start_price', 'N/A')}$**에서 **{natural_gas_analysis.get('end_price', 'N/A')}$**로 **{natural_gas_analysis.get('change_pct', 0):.2f}%** {natural_gas_trend}했습니다.
-
-- 기간 중 최고가: **{natural_gas_analysis.get('max_price', 'N/A')}$** ({natural_gas_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{natural_gas_analysis.get('min_price', 'N/A')}$** ({natural_gas_analysis.get('min_date', 'N/A')})
-
-천연가스는 계절적 수요와 공급망 이슈에 민감하게 반응하며, 청정 에너지 전환 과정에서도 중요한 역할을 하고 있습니다.
-
----
-
-### 10년 국채 금리
-
-![10년 국채 금리 차트](/assets/images/{date_str}/treasury_rate_chart.png)
-
-*그림 5: 최근 30일간 미국 10년 국채 금리 추이 (데이터 출처: yfinance)*
-
-미국 10년 국채 금리는 최근 30일간 **{treasury_analysis.get('start_price', 'N/A')}%**에서 **{treasury_analysis.get('end_price', 'N/A')}%**로 **{treasury_analysis.get('change_pct', 0):.2f}%** {treasury_trend}했습니다.
-
-- 기간 중 최고치: **{treasury_analysis.get('max_price', 'N/A')}%** ({treasury_analysis.get('max_date', 'N/A')})
-- 기간 중 최저치: **{treasury_analysis.get('min_price', 'N/A')}%** ({treasury_analysis.get('min_date', 'N/A')})
-
-장기 국채 금리는 시장의 인플레이션 기대치와 경제 성장 전망을 반영하는 중요한 지표입니다.
-
----
-
-### 구리 가격
-
-![구리 차트](/assets/images/{date_str}/copper_price_chart.png)
-
-*그림 10: 최근 30일간 구리 가격 추이 (데이터 출처: yfinance)*
-
-구리 가격은 최근 30일간 **{copper_analysis.get('start_price', 'N/A')}$**에서 **{copper_analysis.get('end_price', 'N/A')}$**로 **{copper_analysis.get('change_pct', 0):.2f}%** {copper_trend}했습니다.
-
-- 기간 중 최고가: **{copper_analysis.get('max_price', 'N/A')}$** ({copper_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{copper_analysis.get('min_price', 'N/A')}$** ({copper_analysis.get('min_date', 'N/A')})
-
-구리는 경제 전반의 건전성을 나타내는 '드. 구리 가격은 글로벌 경제 성장과 인프라 투자 활동을 반영합니다.
-
----
-
-### 알루미늄 가격
-
-![알루미늄 차트](/assets/images/{date_str}/aluminum_price_chart.png)
-
-*그림 11: 최근 30일간 알루미늄 가격 추이 (데이터 출처: yfinance)*
-
-알루미늄 가격은 최근 30일간 **{aluminum_analysis.get('start_price', 'N/A')}$**에서 **{aluminum_analysis.get('end_price', 'N/A')}$**로 **{aluminum_analysis.get('change_pct', 0):.2f}%** {aluminum_trend}했습니다.
-
-- 기간 중 최고가: **{aluminum_analysis.get('max_price', 'N/A')}$** ({aluminum_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{aluminum_analysis.get('min_price', 'N/A')}$** ({aluminum_analysis.get('min_date', 'N/A')})
-
-알루미늄은 경량 금속으로 자동차, 항공우주, 건설 등 다양한 산업에서 널리 사용됩니다.
-
----
-
-### 밀 가격
-
-![밀 차트](/assets/images/{date_str}/wheat_price_chart.png)
-
-*그림 12: 최근 30일간 밀 가격 추이 (데이터 출처: yfinance)*
-
-밀 가격은 최근 30일간 **{wheat_analysis.get('start_price', 'N/A')}$**에서 **{wheat_analysis.get('end_price', 'N/A')}$**로 **{wheat_analysis.get('change_pct', 0):.2f}%** {wheat_trend}했습니다.
-
-- 기간 중 최고가: **{wheat_analysis.get('max_price', 'N/A')}$** ({wheat_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{wheat_analysis.get('min_price', 'N/A')}$** ({wheat_analysis.get('min_date', 'N/A')}
-
-밀은 세계 식량 안보와 밀접한 관련이 있으며, 기후 조건과 수출국 정책에 영향을 받습니다.
-
----
-
-### 옥수수 가격
-
-![옥수수 차트](/assets/images/{date_str}/corn_price_chart.png)
-
-*그림 13: 최근 30일간 옥수수 가격 추이 (데이터 출처: yfinance)*
-
-옥수수 가격은 최근 30일간 **{corn_analysis.get('start_price', 'N/A')}$**에서 **{corn_analysis.get('end_price', 'N/A')}$**로 **{corn_analysis.get('change_pct', 0):.2f}%** {corn_trend}했습니다.
-
-- 기간 중 최고가: **{corn_analysis.get('max_price', 'N/A')}$** ({corn_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{corn_analysis.get('min_price', 'N/A')}$** ({corn_analysis.get('min_date', 'N/A')}
-
-옥수수는 식량과 바이오 연료 양쪽에 사용되며, 에너지 가격과 기후 조건에 영향을 받습니다.
-
----
-
-### 커피 가격
-
-![커피 차트](/assets/images/{date_str}/coffee_price_chart.png)
-
-*그림 14: 최근 30일간 커피 가격 추이 (데이터 출처: yfinance)*
-
-커피 가격은 최근 30일간 **{coffee_analysis.get('start_price', 'N/A')}$**에서 **{coffee_analysis.get('end_price', 'N/A')}$**로 **{coffee_analysis.get('change_pct', 0):.2f}%** {coffee_trend}했습니다.
-
-- 기간 중 최고가: **{coffee_analysis.get('max_price', 'N/A')}$** ({coffee_analysis.get('max_date', 'N/A')})
-- 기간 중 최저가: **{coffee_analysis.get('min_price', 'N/A')}$** ({coffee_analysis.get('min_date', 'N/A')}
-
-커피 가격은 주요 생산국의 기후 조건, 생산량 변화, 그리고 글로벌 수요에 민감하게 반응합니다.
-
----
-
-## 🌍 글로벌 vs 지역 시장 비교
-
-### 경제 트렌드 요약
-
-최근 30일간의 데이터를 바탕으로 볼 때, 글로벌 경제는 다음과 같은 특징을 보이고 있습니다:
-
-1. **주식시장**: 미국 S&P 500과 한국 KOSPI 모두 {sp500_trend if sp500_analysis.get('change_pct', 0) * kospi_analysis.get('change_pct', 0) > 0 else "서로 다른 방향성을 보이며"} 움직였습니다.
-
-2. **크립토 마켓**: 비트코인과 이더리움은 각각 **{bitcoin_trend} / {ethereum_trend}**했으며, 전통 자산과의 상관관계가 높아지고 있습니다.
-
-3. **원자재**: 금({gold_trend})과 은({silver_trend}), 원유({oil_trend}), 그리고 구리({copper_trend}) 등 산업용 금속의 가격 변동은 글로벌 경제 성장과 불확실성을 반영하고 있습니다.
-
-4. **농산물**: 밀({wheat_trend}), 옥수수({corn_trend}), 커피({coffee_trend}) 등은 기후 조건과 글로벌 수급에 민감하게 반응하고 있습니다.
-
-5. **금리**: 장기 국채 금리의 움직임은 연준의 통화 정책 기대와 경제 성장 전망을 나타냅니다.
-
-### 한국 시장 특징
-
-KOSPI는 다음 요인들에 민감하게 반응하고 있습니다:
-
-- 반도체 등 핵심 수출 품목의 글로벌 수요 변화
-- 미-중 경제 갈등 등 지정학적 리스크
-- 환율 변동에 따른 수출 기업 수익성 변화
-
----
-
-## 📈 주요 시사점
+## 🎯 주요 시사점
 
 ### 투자자 관점
 
@@ -499,9 +253,9 @@ KOSPI는 다음 요인들에 민감하게 반응하고 있습니다:
 
 ## 📌 결론
 
-{year_month_str} 현재 글로벌 경제는 여전히 변동성이 높은 상황입니다. 주요 지수들의 움직임을 모니터링하면서 데이터 기반의 객관적 분석에 기초한 투자 및 경제 활동이 필요합니다.
+{year_month_str} 현재 글로벌 경제는 여전히 변동성이 높은 상황입니다. 위 표를 통해 주요 지수들의 움직임을 한눈에 파악할 수 있으며, 데이터 기반의 객관적 분석에 기초한 투자 및 경제 활동이 필요합니다.
 
-본 포스트에서 제공하는 데이터와 차트는 **yfinance**를 통해 수집된 실제 시장 데이터를 기반으로 하며, 지속적인 업데이트를 통해 최신 경제 동향을 파악하는 데 활용하실 수 있습니다.
+본 포스트에서 제공하는 데이터와 표는 **yfinance**를 통해 수집된 실제 시장 데이터를 기반으로 하며, 지속적인 업데이트를 통해 최신 경제 동향을 파악하는 데 활용하실 수 있습니다.
 
 ---
 
@@ -522,25 +276,21 @@ def main():
     print("Economic News Post Generator")
     print("=" * 60)
 
-    # Step 1: Create output directory
-    print("\n[1/4] Creating output directory...")
-    create_output_directory()
-
-    # Step 2: Fetch data
-    print("\n[2/4] Fetching financial data...")
+    # Step 1: Fetch data
+    print("\n[1/3] Fetching financial data...")
     data = fetch_data()
 
-    # Step 3: Create charts
-    print("\n[3/4] Creating charts...")
-    chart_files = create_chart(data)
-
-    # Step 4: Analyze data
-    print("\n[4/4] Analyzing data...")
+    # Step 2: Analyze data
+    print("\n[2/3] Analyzing data...")
     analysis = analyze_data(data)
 
-    # Step 5: Generate blog post
-    print("\n[5/5] Generating blog post...")
-    blog_post = generate_blog_post(chart_files, analysis)
+    # Step 3: Create summary tables
+    print("\n[3/3] Creating summary tables...")
+    tables = create_summary_table(analysis)
+
+    # Step 4: Generate blog post
+    print("\n[4/4] Generating blog post...")
+    blog_post = generate_blog_post(tables, analysis)
 
     print("\n" + "=" * 60)
     print("✓ All tasks completed successfully!")
@@ -548,14 +298,14 @@ def main():
 
     # Print summary
     print("\n📋 Summary:")
-    print(f"  - Charts created: {len(chart_files)}")
     print(f"  - Blog post: {POST_PATH}")
     print(f"  - Data source: yfinance")
     print(f"  - Instruments analyzed: {len([d for d in data.values() if d is not None])}")
+    print(f"  - Categories covered: {len(tables)}")
 
     return {
-        'chart_files': chart_files,
         'analysis': analysis,
+        'tables': tables,
         'post_path': POST_PATH
     }
 
