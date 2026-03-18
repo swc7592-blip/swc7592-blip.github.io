@@ -19,14 +19,26 @@ POST_PATH = f"/Users/shin/.openclaw/workspace/swc7592-blip.github.io/_posts/{dat
 INSTRUMENTS = {
     # Stock Indices
     'sp500': {'ticker': '^GSPC', 'title': 'S&P 500', 'category': '주식지수', 'unit': '지수'},
+    'nasdaq': {'ticker': '^IXIC', 'title': 'Nasdaq 100', 'category': '주식지수', 'unit': '지수'},
+    'dowjones': {'ticker': '^DJI', 'title': 'Dow Jones', 'category': '주식지수', 'unit': '지수'},
     'kospi': {'ticker': '^KS11', 'title': 'KOSPI', 'category': '주식지수', 'unit': '지수'},
 
     # Interest Rates
-    'treasury': {'ticker': '^TNX', 'title': '10년 국채 금리', 'category': '금리', 'unit': '%'},
+    'treasury10': {'ticker': '^TNX', 'title': '2년 국채 금리', 'category': '금리', 'unit': '%'},
+    'treasury30': {'ticker': '^TYX', 'title': '30년 국채 금리', 'category': '금리', 'unit': '%'},
+
+    # Volatility
+    'vix': {'ticker': '^VIX', 'title': 'VIX 지수', 'category': '변동성', 'unit': '지수'},
+
+    # Currency / FX
+    'usdkrw': {'ticker': 'USDKRW=X', 'title': 'USD/KRW', 'category': '환율', 'unit': '원'},
+    'eurusd': {'ticker': 'EURUSD=X', 'title': 'EUR/USD', 'category': '환율', 'unit': 'USD'},
+    'usdjpy': {'ticker': 'USDJPY=X', 'title': 'USD/JPY', 'category': '환율', 'unit': 'JPY'},
 
     # Cryptocurrencies
     'bitcoin': {'ticker': 'BTC-USD', 'title': '비트코인 (Bitcoin)', 'category': '크립토', 'unit': 'USD'},
     'ethereum': {'ticker': 'ETH-USD', 'title': '이더리움 (Ethereum)', 'category': '크립토', 'unit': 'USD'},
+    'sol': {'ticker': 'SOL-USD', 'title': '솔라나 (SOL)', 'category': '크립토', 'unit': 'USD'},
 
     # Metals (금속)
     'gold': {'ticker': 'GC=F', 'title': '금 (Gold)', 'category': '금속', 'unit': 'USD/oz'},
@@ -40,6 +52,7 @@ INSTRUMENTS = {
     'brent': {'ticker': 'BZ=F', 'title': 'Brent 원유 (Brent Crude)', 'category': '원료', 'unit': 'USD/배럴'},
     'natural_gas': {'ticker': 'NG=F', 'title': '천연가스 (Natural Gas)', 'category': '원료', 'unit': 'USD/MMBtu'},
     'gasoline': {'ticker': 'RB=F', 'title': '휘발유 (RBOB Gasoline)', 'category': '원료', 'unit': 'USD/갤런'},
+    'palladium': {'ticker': 'PA=F', 'title': '팔라듐 (Palladium)', 'category': '원료', 'unit': 'USD/oz'},
 
     # Agricultural Products (농산물)
     'wheat': {'ticker': 'ZW=F', 'title': '밀 (Wheat)', 'category': '농산물', 'unit': 'USD/bushel'},
@@ -133,7 +146,9 @@ def create_summary_table(analysis):
         '농산물': [],
         '주식지수': [],
         '크립토': [],
-        '금리': []
+        '금리': [],
+        '환율': [],
+        '변동성': []
     }
 
     for key, item in analysis.items():
@@ -181,8 +196,8 @@ layout: post
 title: "{year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드"
 date: {date_str} 06:00:00 +0900
 categories: [economy, global-finance]
-tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금, 은, 백금, 구리, 알루미늄, WTI 원유, Brent 원유, 천연가스, 휘발유, 밀, 옥수수, 대두, 커피, 요소, 비트코인, 이더리움, KOSPI, S&P 500]
-description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 금속, 원료, 농산물, 크립토 시장 트렌드"
+tags: [경제, 연준, 금리, 인플레이션, 주식, 금융, 금, 은, 백금, 구리, 알루미늄, WTI 원유, Brent 원유, 천연가스, 휘발유, 팔라듐, 밀, 옥수수, 대두, 커피, USD/KRW, EUR/USD, USD/JPY, Nasdaq, Dow Jones, VIX, 2년 국채, 30년 국채, 솔라나, 비트코인, 이더리움, KOSPI, S&P 500]
+description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 환율, 주식지수, 금리, 변동성, 금속, 원료, 농산물, 크립토 시장 트렌드"
 ---
 
 ## {year_month_str} 글로벌 경제 동향 분석: 금리 정책과 시장 트렌드
@@ -196,7 +211,7 @@ description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 금속, 원
 """
 
     # Add tables for each category
-    for category in ['금속', '원료', '농산물', '주식지수', '크립토', '금리']:
+    for category in ['금속', '원료', '농산물', '환율', '변동성', '주식지수', '크립토', '금리']:
         if category in tables:
             blog_post += f"\n### {category}\n\n{tables[category]}\n\n"
 
