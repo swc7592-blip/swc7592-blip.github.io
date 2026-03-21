@@ -52,7 +52,7 @@ INSTRUMENTS = {
     'brent': {'ticker': 'BZ=F', 'title': 'Brent 원유 (Brent Crude)', 'category': '원료', 'unit': 'USD/배럴'},
     'natural_gas': {'ticker': 'NG=F', 'title': '천연가스 (Natural Gas)', 'category': '원료', 'unit': 'USD/MMBtu'},
     'gasoline': {'ticker': 'RB=F', 'title': '휘발유 (RBOB Gasoline)', 'category': '원료', 'unit': 'USD/갤런'},
-    'palladium': {'ticker': 'PA=F', 'title': '팔라듐 (Palladium)', 'category': '원료', 'unit': 'USD/oz'},
+    'palladium': {'ticker': 'PA=F', 'title': '팔라듐 (Palladium)', 'category': '금속', 'unit': 'USD/oz'},
 
     # Agricultural Products (농산물)
     'wheat': {'ticker': 'ZW=F', 'title': '밀 (Wheat)', 'category': '농산물', 'unit': 'USD/bushel'},
