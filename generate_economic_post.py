@@ -73,7 +73,7 @@ def fetch_data():
         print(f"  Fetching {info['title']} ({info['ticker']})...")
         try:
             df = yf.download(info['ticker'], start=start_date, end=end_date, progress=False)
-            # Get the last 30 trading days (rows)
+            # Get last 30 trading days (rows)
             df = df.tail(30)
             # Flatten MultiIndex columns
             df.columns = df.columns.get_level_values(0)
@@ -105,11 +105,16 @@ def analyze_data(data):
         else:
             prices = df['Adj Close']
 
-        # Calculate statistics
+        # Calculate 30-day statistics
         start_price = prices.iloc[0]
         end_price = prices.iloc[-1]
-        change = end_price - start_price
-        change_pct = (change / start_price) * 100
+        change_30d = end_price - start_price
+        change_30d_pct = (change_30d / start_price) * 100
+
+        # Calculate daily change (last day)
+        prev_day_price = prices.iloc[-2]
+        daily_change = end_price - prev_day_price
+        daily_change_pct = (daily_change / prev_day_price) * 100
 
         # Find min and max
         max_price = prices.max()
@@ -117,7 +122,7 @@ def analyze_data(data):
         max_idx = prices.idxmax()
         min_idx = prices.idxmin()
 
-        # Get date - it's the index itself
+        # Get date
         max_date = pd.Timestamp(max_idx).strftime('%Y-%m-%d')
         min_date = pd.Timestamp(min_idx).strftime('%Y-%m-%d')
 
@@ -127,8 +132,10 @@ def analyze_data(data):
             'unit': info['unit'],
             'start_price': round(float(start_price), 2),
             'end_price': round(float(end_price), 2),
-            'change': round(float(change), 2),
-            'change_pct': round(float(change_pct), 2),
+            'change_30d': round(float(change_30d), 2),
+            'change_30d_pct': round(float(change_30d_pct), 2),
+            'daily_change': round(float(daily_change), 2),
+            'daily_change_pct': round(float(daily_change_pct), 2),
             'max_price': round(float(max_price), 2),
             'max_date': max_date,
             'min_price': round(float(min_price), 2),
@@ -167,17 +174,20 @@ def create_summary_table(analysis):
 
         # Build markdown table
         table_lines = []
-        table_lines.append(f"| 항목 | 현재 가격 | 시작 가격 | 변동 | 변동률 | 기간 중 최고 | 최고 날짜 | 기간 중 최저 | 최저 날짜 |")
-        table_lines.append("|------|----------|----------|------|--------|------------|----------|------------|----------|")
+        table_lines.append(f"| 항목 | 현재 가격 | 시작 가격 | 30일 변동 | 30일 변동률 | 일일 변동 | 일일 변동률 | 기간 중 최고 | 최고 날짜 | 기간 중 최저 | 최저 날짜 |")
+        table_lines.append("|------|----------|----------|----------|-----------|----------|-----------|------------|----------|------------|----------|")
 
         for item in items:
-            trend = "📈" if item['change_pct'] > 0 else "📉"
+            trend_30d = "📈" if item['change_30d_pct'] > 0 else "📉"
+            trend_daily = "📈" if item['daily_change_pct'] > 0 else "📉"
             table_lines.append(
                 f"| {item['title']} | "
                 f"{item['end_price']} {item['unit']} | "
                 f"{item['start_price']} {item['unit']} | "
-                f"{item['change']:+.2f} {item['unit']} | "
-                f"{trend} {item['change_pct']:+.2f}% | "
+                f"{item['change_30d']:+.2f} {item['unit']} | "
+                f"{trend_30d} {item['change_30d_pct']:+.2f}% | "
+                f"{item['daily_change']:+.2f} {item['unit']} | "
+                f"{trend_daily} {item['daily_change_pct']:+.2f}% | "
                 f"{item['max_price']} {item['unit']} | "
                 f"{item['max_date']} | "
                 f"{item['min_price']} {item['unit']} | "
@@ -222,25 +232,37 @@ description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 환율, 주
 
 최근 30일간의 데이터를 바탕으로 주요 경제 동향을 요약합니다:
 
-### 📈 상승한 항목
+---
+
+### 📈 30일 상승한 항목
 
 """
 
-    # List trending up items
-    trending_up = [item for item in analysis.values() if item['change_pct'] > 0]
-    trending_up.sort(key=lambda x: x['change_pct'], reverse=True)
+    # List trending up items (30-day)
+    trending_up = [item for item in analysis.values() if item['change_30d_pct'] > 0]
+    trending_up.sort(key=lambda x: x['change_30d_pct'], reverse=True)
 
     for item in trending_up[:5]:
-        blog_post += f"- **{item['title']}**: +{item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
+        blog_post += f"- **{item['title']}**: +{item['change_30d_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
 
-    blog_post += "\n### 📉 하락한 항목\n\n"
+    blog_post += "\n### 📉 30일 하락한 항목\n\n"
 
-    # List trending down items
-    trending_down = [item for item in analysis.values() if item['change_pct'] < 0]
-    trending_down.sort(key=lambda x: x['change_pct'])
+    # List trending down items (30-day)
+    trending_down = [item for item in analysis.values() if item['change_30d_pct'] < 0]
+    trending_down.sort(key=lambda x: x['change_30d_pct'])
 
     for item in trending_down[:5]:
-        blog_post += f"- **{item['title']}**: {item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
+        blog_post += f"- **{item['title']}**: {item['change_30d_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
+
+    blog_post += "\n### 📊 일일 변동 (어제 vs 오늘)\n\n"
+
+    # List biggest daily movers
+    daily_movers = list(analysis.values())
+    daily_movers.sort(key=lambda x: abs(x['daily_change_pct']), reverse=True)
+
+    for item in daily_movers[:5]:
+        trend = "📈" if item['daily_change_pct'] > 0 else "📉"
+        blog_post += f"- **{item['title']}**: {trend} {item['daily_change_pct']:+.2f}% ({item['daily_change']:+.2f} {item['unit']})\n"
 
     blog_post += """
 ---
@@ -278,7 +300,7 @@ description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 환율, 주
 
 ## 📌 결론
 
-{year_month_str} 현재 글로벌 경제는 여전히 변동성이 높은 상황입니다. 위 표를 통해 주요 지수들의 움직임을 한눈에 파악할 수 있으며, 데이터 기반의 객관적 분석에 기초한 투자 및 경제 활동이 필요합니다.
+""" + f"""{year_month_str}""" + """ 현재 글로벌 경제는 여전히 변동성이 높은 상황입니다. 위 표를 통해 주요 지수들의 움직임을 한눈에 파악할 수 있으며, 데이터 기반의 객관적 분석에 기초한 투자 및 경제 활동이 필요합니다.
 
 본 포스트에서 제공하는 데이터와 표는 **yfinance**를 통해 수집된 실제 시장 데이터를 기반으로 하며, 지속적인 업데이트를 통해 최신 경제 동향을 파악하는 데 활용하실 수 있습니다.
 
@@ -302,15 +324,15 @@ def main():
     print("=" * 60)
 
     # Step 1: Fetch data
-    print("\n[1/3] Fetching financial data...")
+    print("\n[1/4] Fetching financial data...")
     data = fetch_data()
 
     # Step 2: Analyze data
-    print("\n[2/3] Analyzing data...")
+    print("\n[2/4] Analyzing data...")
     analysis = analyze_data(data)
 
     # Step 3: Create summary tables
-    print("\n[3/3] Creating summary tables...")
+    print("\n[3/4] Creating summary tables...")
     tables = create_summary_table(analysis)
 
     # Step 4: Generate blog post
