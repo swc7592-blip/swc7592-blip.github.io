@@ -111,6 +111,16 @@ def analyze_data(data):
         change = end_price - start_price
         change_pct = (change / start_price) * 100
 
+        # Calculate daily change (last 2 days)
+        if len(prices) >= 2:
+            daily_end_price = prices.iloc[-1]
+            daily_start_price = prices.iloc[-2]
+            daily_change = daily_end_price - daily_start_price
+            daily_change_pct = (daily_change / daily_start_price) * 100
+        else:
+            daily_change = 0
+            daily_change_pct = 0
+
         # Find min and max
         max_price = prices.max()
         min_price = prices.min()
@@ -129,6 +139,8 @@ def analyze_data(data):
             'end_price': round(float(end_price), 2),
             'change': round(float(change), 2),
             'change_pct': round(float(change_pct), 2),
+            'daily_change': round(float(daily_change), 2),
+            'daily_change_pct': round(float(daily_change_pct), 2),
             'max_price': round(float(max_price), 2),
             'max_date': max_date,
             'min_price': round(float(min_price), 2),
@@ -167,17 +179,19 @@ def create_summary_table(analysis):
 
         # Build markdown table
         table_lines = []
-        table_lines.append(f"| 항목 | 현재 가격 | 시작 가격 | 변동 | 변동률 | 기간 중 최고 | 최고 날짜 | 기간 중 최저 | 최저 날짜 |")
-        table_lines.append("|------|----------|----------|------|--------|------------|----------|------------|----------|")
+        table_lines.append(f"| 항목 | 현재 가격 | 30일 변동(point) | 30일 변동(%) | 일일 변동(point) | 일일 변동(%) | 기간 중 최고 | 최고 날짜 | 기간 중 최저 | 최저 날짜 |")
+        table_lines.append("|------|----------|-----------------|---------------|---------------|------------|------------|----------|------------|----------|")
 
         for item in items:
-            trend = "📈" if item['change_pct'] > 0 else "📉"
+            trend_30d = "📈" if item['change_pct'] > 0 else "📉"
+            trend_daily = "📈" if item['daily_change_pct'] > 0 else "📉"
             table_lines.append(
                 f"| {item['title']} | "
                 f"{item['end_price']} {item['unit']} | "
-                f"{item['start_price']} {item['unit']} | "
                 f"{item['change']:+.2f} {item['unit']} | "
-                f"{trend} {item['change_pct']:+.2f}% | "
+                f"{trend_30d} {item['change_pct']:+.2f}% | "
+                f"{item['daily_change']:+.2f} {item['unit']} | "
+                f"{trend_daily} {item['daily_change_pct']:+.2f}% | "
                 f"{item['max_price']} {item['unit']} | "
                 f"{item['max_date']} | "
                 f"{item['min_price']} {item['unit']} | "
@@ -220,9 +234,9 @@ description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 환율, 주
 
 ## 🌍 경제 트렌드 요약
 
-최근 30일간의 데이터를 바탕으로 주요 경제 동향을 요약합니다:
+최근 30일간의 데이터를 바탕으로 주요 경제 동향을 요약합니다. 일일 변동은 전날 대비 변동입니다.
 
-### 📈 상승한 항목
+### 📈 상승한 항목 (30일 기준)
 
 """
 
@@ -231,16 +245,18 @@ description: "{date_str} 글로벌 및 한국 경제 동향 분석 - 환율, 주
     trending_up.sort(key=lambda x: x['change_pct'], reverse=True)
 
     for item in trending_up[:5]:
-        blog_post += f"- **{item['title']}**: +{item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
+        daily_trend = "📈" if item['daily_change_pct'] > 0 else "📉"
+        blog_post += f"- **{item['title']}**: +{item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']}) | 일일: {daily_trend} {item['daily_change_pct']:+.2f}%\n"
 
-    blog_post += "\n### 📉 하락한 항목\n\n"
+    blog_post += "\n### 📉 하락한 항목 (30일 기준)\n\n"
 
     # List trending down items
     trending_down = [item for item in analysis.values() if item['change_pct'] < 0]
     trending_down.sort(key=lambda x: x['change_pct'])
 
     for item in trending_down[:5]:
-        blog_post += f"- **{item['title']}**: {item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']})\n"
+        daily_trend = "📈" if item['daily_change_pct'] > 0 else "📉"
+        blog_post += f"- **{item['title']}**: {item['change_pct']:.2f}% ({item['start_price']} → {item['end_price']} {item['unit']}) | 일일: {daily_trend} {item['daily_change_pct']:+.2f}%\n"
 
     blog_post += """
 ---
